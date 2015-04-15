@@ -1,0 +1,34 @@
+{%
+Dim inputName = CurrentQuestion.InputName()
+Dim inputValue
+Dim numberOfStars = CurrentADC.PropValue("numberOfStars").ToNumber()
+Dim showTooltip = CurrentADC.PropValue("showTooltips")
+Dim dkSingle = CurrentADC.PropValue("dkSingle")
+Dim i
+Dim j
+Dim apr = CurrentQuestion.ParentLoop.AvailableResponses
+Dim ar = CurrentQuestion.AvailableResponses
+Dim arCount = CurrentQuestion.AvailableResponses.Count
+Dim caption
+Dim image
+
+IF dkSingle = "1" Then
+   arCount = CurrentQuestion.AvailableResponses.Count - 1
+EndIF
+
+For j = 1 To apr.Count
+    inputName = CurrentQuestion.Iteration(apr[j].Index).InputName() 
+    caption = apr[j].Caption
+    image	  = apr.ResourceURL[j]
+    %}
+    <input type="hidden" id="{%= inputName %}" name="{%= inputName %}" value="{%= CurrentQuestion.Iteration(apr[j].Index).inputValue() %}"  />
+{% Next %}
+<div class="starContainer {%= inputName %}" data-id="{%= inputName %}">
+{% For i = 1 To arCount %}      
+    <a class="star {% IF showTooltip = "1" Then %}tooltip{% EndIF %}" data-value="{%= ar[i].inputValue() %}" id="star{%= i %}">{% IF showTooltip = "1" Then %}<span class="classic">{%= CurrentQuestion.AvailableResponses[i].Caption %}</span>{% EndIF %}</a>
+{% Next %}
+</div>
+{% IF dkSingle = "1" Then %}
+    <div class="dk" data-value="{%= ar[CurrentQuestion.AvailableResponses.Count].inputValue() %}">{%:= CurrentADC.PropValue("dkText")%}</div>
+{% EndIF %}
+<div style="clear:both;"></div>

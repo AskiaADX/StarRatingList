@@ -1,0 +1,138 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* Statements */
+.adc-starratingList .statement, 
+.adc-starratingList .previousStatement,
+.adc-starratingList .nextStatement
+{   
+    /* Element */
+	display:block;
+	margin:0 0 5px 0;
+    vertical-align:middle;
+	cursor:pointer;
+	
+	/* Decoration */
+	border: 1px solid #000;
+	background: #fff; 
+	background: -webkit-gradient(linear, 0 0, 0 100%, from( #fff ) to( #cecece )); 
+	background: -webkit-linear-gradient( #fff , #cecece ); 
+	background: -moz-linear-gradient( 	 #fff , #cecece ); 
+	background: -ms-linear-gradient( 	 #fff , #cecece ); 
+	background: -o-linear-gradient( 	 #fff , #cecece ); 
+	background: linear-gradient( 		 #fff , #cecece ); 	
+	
+	/* Effects */
+	-webkit-border-radius:	5px 5px 5px 5px; 
+	-moz-border-radius:		5px 5px 5px 5px; 
+	-khtml-border-radius:	5px 5px 5px 5px; 
+	border-radius:			5px 5px 5px 5px; 
+	
+	/* disable highlight text */
+	-moz-user-select: none; 
+	-webkit-user-select: none; 
+	-ms-user-select:none; 
+	user-select:none;
+	
+	position:relative;
+}
+.adc-starratingList .previousStatement span,
+.adc-starratingList .nextStatement span 
+{
+    text-align:center;
+}
+
+.adc-starratingList .previousStatement span,
+.adc-starratingList .nextStatement span,
+.adc-starratingList .statement_text 
+{ 
+	display:block;
+	padding:10px;
+	font-size:12px;
+	color:#000;
+}
+.adc-starratingList .statement { margin-bottom:10px; cursor:default; }
+.adc-starratingList .statement img {
+	float:left;
+	display:inline-block; 
+	margin:5px 20px 5px 5px;
+}
+
+.adc-starratingList .Btn { 
+    /* Element */
+	display:block;
+	width:35px;
+	margin:0 0 5px 0;
+    vertical-align:middle;
+	cursor:pointer;
+	
+	/* Decoration */
+	border: 1px solid #000;
+	background: #fff; 
+	background: -webkit-gradient(linear, 0 0, 0 100%, from( #fff ) to( #cecece )); 
+	background: -webkit-linear-gradient( #fff , #cecece ); 
+	background: -moz-linear-gradient( 	 #fff , #cecece ); 
+	background: -ms-linear-gradient( 	 #fff , #cecece ); 
+	background: -o-linear-gradient( 	 #fff , #cecece ); 
+	background: linear-gradient( 		 #fff , #cecece ); 	
+	
+	/* Effects */
+	-webkit-border-radius:	5px 5px 5px 5px; 
+	-moz-border-radius:		5px 5px 5px 5px; 
+	-khtml-border-radius:	5px 5px 5px 5px; 
+	border-radius:			5px 5px 5px 5px; 
+	
+	/* disable highlight text */
+	-moz-user-select: none; 
+	-webkit-user-select: none; 
+	-ms-user-select:none; 
+	user-select:none;
+	
+	position:relative;
+}
+
+.adc-starratingList .nextStatement .img { display:block; height:100%; width:100%; background:url(next.png) center left no-repeat; }
+.adc-starratingList .previousStatement .img { display:block; height:100%; width:100%; background:url(prev.png) center left no-repeat; }
+
+.star {
+	display:block;
+	width:50px;
+	height:50px;
+	background:url('star.png') top no-repeat;
+	float:left;
+	margin-right:5px;
+	cursor:pointer;
+	/*position:relative;*/
+}
+
+.selected, .hover {
+	background:url('star.png') bottom no-repeat;
+}
+
+.controlContainer { display:block; margin-bottom:10px; }
+.starContainer { display:inline-block; /*overflow:hidden;*/ vertical-align:middle; margin-bottom:10px; }
+.captionContainer { 
+	float:left; 
+	
+	/* disable highlight text */
+	-moz-user-select: none; 
+	-webkit-user-select: none; 
+	-ms-user-select:none; 
+	user-select:none;
+	
+	vertical-align:middle;
+}
+.caption { margin-right:10px; line-height:140%; }
+
+.dk { 
+	cursor:pointer;
+	display:inline-block; 
+	padding:10px; 
+	border:1px solid #333; 
+	background:#1369C4; 
+	color:#fff; 
+	margin-left:10px;
+	vertical-align:middle;
+}
+
+.dk.selected { background:red; }

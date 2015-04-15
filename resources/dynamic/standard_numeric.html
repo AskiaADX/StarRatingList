@@ -1,0 +1,23 @@
+{%
+Dim inputName = CurrentQuestion.InputName()
+Dim inputValue
+Dim numberOfStars = CurrentADC.PropValue("numberOfStars").ToNumber()
+Dim i
+Dim j
+Dim ar = CurrentQuestion.ParentLoop.AvailableResponses
+Dim caption
+
+For j = 1 To ar.Count
+    inputName = CurrentQuestion.Iteration(ar[j].Index).InputName() 
+    caption   = ar[j].Caption
+    %}
+    <input type="hidden" id="{%= inputName %}" name="{%= inputName %}" value="{%= CurrentQuestion.Iteration(ar[j].Index).inputValue() %}"  />
+{% Next %}
+<div style="clear:both;"></div>
+<div class="starContainer {%= inputName %}" data-id="{%= inputName %}">
+{% For i = 1 To numberOfStars %}      
+    <div class="star" data-value="{%= i %}" id="star{%= i %}"></div>
+{% Next %}
+</div>
+<div class="dk" data-value="-1">{%:= CurrentADC.PropValue("dkText")%}</div>
+<div style="clear:both;"></div>

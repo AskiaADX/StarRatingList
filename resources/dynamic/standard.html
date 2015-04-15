@@ -1,0 +1,25 @@
+﻿<div class="controlContainer">
+    <div id="adc_{%= CurrentADC.InstanceId %}" class="adc-starratingList">
+        {% IF CurrentADC.PropValue("showCounter") = "1" Then %}
+            <div class="counterContainer" unselectable='on' onselectstart='return false;' onmousedown='return false;'><div class="counter"><div class="counterNumber"></div></div></div>
+        {% EndIF %}
+        <div class="previousStatement Btn top" style="display:none;" unselectable='on' onselectstart='return false;' onmousedown='return false;'><div class="img"></div></div>
+        <div class="statement" unselectable='on' onselectstart='return false;' onmousedown='return false;'>
+        {%  Dim j
+        	Dim caption
+            For j = 1 To CurrentQuestion.ParentLoop.AvailableResponses.Count
+                caption = CurrentQuestion.ParentLoop.AvailableResponses[j].Caption
+        %}
+            <span class="statement_text" data-id="{%= j %}" style="display:none;">{%:= caption %}</span>
+        {% Next %}
+        </div>
+        <div class="nextStatement Btn top" style="display:none;" unselectable='on' onselectstart='return false;' onmousedown='return false;'><div class="img"></div></div>
+        {% IF CurrentQuestion.Type = "single" Then %}
+          {%:= CurrentADC.GetContent("dynamic/standard_single.html").ToText()%}
+        {% ElseIf CurrentQuestion.Type = "numeric" Then %}
+          {%:= CurrentADC.GetContent("dynamic/standard_numeric.html").ToText()%}
+        {% EndIF %}
+        <div class="previousStatement Btn" style="display:none;" unselectable='on' onselectstart='return false;' onmousedown='return false;'><div class="img"></div></div>
+        <div class="nextStatement Btn" style="display:none;" unselectable='on' onselectstart='return false;' onmousedown='return false;'><div class="img"></div></div>
+    </div>
+</div>
