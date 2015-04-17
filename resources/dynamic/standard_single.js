@@ -14,5 +14,5 @@ Next
 For i = 1 To ar.Count 
 	inputName = CurrentQuestion.Iteration(i).InputName() 
 	%}
-{element : $('#{%= inputName%}'), allValues : "{%= allValues%}"}{%= On(i < numberOfStars, ",", "") %}
+{element : $('#{%= inputName%}'), allValues : "{%= allValues%}"}{%= On(i < ar.Count, ",", "") %}
 {% Next %}

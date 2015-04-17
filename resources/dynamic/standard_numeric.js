@@ -8,5 +8,5 @@ Dim numberOfStars = CurrentADC.PropValue("numberOfStars").ToNumber()
 For i = 1 To ar.Count 
 	inputName = CurrentQuestion.Iteration(i).InputName()
 %}
-{element : $('#{%= inputName%}')}{%= On(i < numberOfStars, ",", "") %}
+{element : $('#{%= inputName%}')}{%= On(i < ar.Count, ",", "") %}
 {% Next %}
