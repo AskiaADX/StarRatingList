@@ -43,7 +43,7 @@ For i = 1 To car.Count
    		attrChecked = On(CurrentQuestion.Iteration(ar[j].Index).AvailableResponses[i].IsSelected, "checked=\"checked\"", "")
    		
 %}
-    <td align="center"><input type="radio" name="{%= inputName %}" value="{%= inputValue %}" {%:= attrChecked %} title="{%= caption %}" /></td>
+    <td align="center"><input type="radio" name="{%= inputName %}" value="{%= inputValue %}" {%:= attrChecked %} title="{%:= caption %}" /></td>
 	{% Next %}
 </tr>
 {% Next %}

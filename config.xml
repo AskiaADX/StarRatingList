@@ -7,18 +7,20 @@
   <info>
     <name>adc2-starratingList</name>
     <guid>995b8259-2cec-4368-b733-d7ea6eec68a9</guid>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <date>2014-07-03</date>
     <description>
       <![CDATA[
         v1.0.1 - Fixed error thrown in IE8 because of old & unused code
 		v1.0.2 - Fixed empty element in itteration loop when numeric question (see github change)
 		v1.0.3 - Fixed a wrong loop iteration count
+		v1.0.4 - Fixed encoding of caption
 	  ]]>
     </description>
     <author>
       <![CDATA[
         Paul Ferreira <paulf@askia.com>
+        Jerome Duparc <jeromed@askia.com>
       ]]>
     </author>
     <company>Askia</company>

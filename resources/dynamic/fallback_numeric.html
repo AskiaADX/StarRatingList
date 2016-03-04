@@ -39,7 +39,7 @@ For i = 1 To ar.Count
         inputName = CurrentQuestion.Iteration(ar[i].Index).InputName()
    		attrChecked = On(CurrentQuestion.Iteration(ar[i].Index).AvailableResponses[j].IsSelected, "checked=\"checked\"", "")
 %}
-    <td align="center"><input type="checkbox" name="{%= inputName %} {%= inputValue %}" value="{%= inputValue %}" {%:= attrChecked %} title="{%= caption %}" /></td>
+    <td align="center"><input type="checkbox" name="{%= inputName %} {%= inputValue %}" value="{%= inputValue %}" {%:= attrChecked %} title="{%:= caption %}" /></td>
 	{% Next %}
     </tr>
 {% Next %}
