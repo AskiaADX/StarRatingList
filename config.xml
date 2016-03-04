@@ -15,6 +15,7 @@
 		v1.0.2 - Fixed empty element in itteration loop when numeric question (see github change)
 		v1.0.3 - Fixed a wrong loop iteration count
 		v1.0.4 - Fixed encoding of caption
+		           - Fixed hover problem on mobile/tablet
 	  ]]>
     </description>
     <author>

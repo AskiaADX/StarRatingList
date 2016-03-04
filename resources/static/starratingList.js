@@ -385,6 +385,7 @@
 			}
 
 			$container.find('.star, .dk').removeClass('selected');
+			$container.find('.star, .dk').removeClass('hover');
 			
 			if(currentIteration < 0 || currentIteration >= iterations.length){
 				
