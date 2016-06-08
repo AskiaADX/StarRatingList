@@ -39,6 +39,7 @@
 		}
 		
 		(options.autoForward = Boolean(options.autoForward) || false);
+        (options.autoForwardLastIteration = Boolean(options.autoForwardLastIteration) || false);
 		(options.scrollToTop = Boolean(options.scrollToTop) || false);
 		(options.showCounter = Boolean(options.showCounter) || false);
 				
@@ -336,7 +337,9 @@
 			if (currentIteration > (iterations.length - 1)) {
 				if ( options.autoForward === true ) {
 					$container.find('.statement').animate(css, options.animationSpeed);
-					$(':input[name=Next]:last').click();
+                    if ( options.autoForwardLastIteration === true ) {
+                        $(':input[name=Next]:last').click();
+                    }
 				} else {
 					currentIteration--;	
 					if ( $container.find('.nextStatement').css('display') != 'none' ) $container.find('.nextStatement').css('display','none');

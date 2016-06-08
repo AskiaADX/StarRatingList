@@ -1,4 +1,4 @@
-﻿/* standard.js */
+/* standard.js */
 $(window).load(function() {
 	$('#adc_{%= CurrentADC.InstanceId %}').adcStarratingList({
 		maxWidth : '{%= CurrentADC.PropValue("maxWidth") %}',
@@ -20,6 +20,7 @@ $(window).load(function() {
 		showTooltips: {%= (CurrentADC.PropValue("showTooltips") = "1") %},
 		dkSingle: {%= (CurrentADC.PropValue("dkSingle") = "1") %},
 		dkLeftMargin: '{%= CurrentADC.PropValue("dkLeftMargin") %}',
+        autoForwardLastIteration: {%= (CurrentADC.PropValue("autoForwardLastIteration") = "1") %},
 		iterations: [
 			{% IF CurrentQuestion.Type = "single" Then %}
 				{%:= CurrentADC.GetContent("dynamic/standard_single.js").ToText()%}
