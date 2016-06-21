@@ -39,6 +39,7 @@
 		}
 		
 		(options.autoForward = Boolean(options.autoForward) || false);
+        (options.use = options.use || "star");
         (options.autoForwardLastIteration = Boolean(options.autoForwardLastIteration) || false);
 		(options.scrollToTop = Boolean(options.scrollToTop) || false);
 		(options.showCounter = Boolean(options.showCounter) || false);
@@ -79,6 +80,7 @@
 		
 		// Global variables
 		var $container = $(this),
+            useStar = options.use,
 			currentIteration = 0,
             iterations = options.iterations,
 			useAltColour = Boolean(options.useAltColour),
@@ -154,7 +156,7 @@
 			}
 		}
 		
-		$('.starContainer').width( $('.star').outerWidth(true) * $('.starContainer .star').size() );
+		$('.starContainer').width( $('.' + useStar).outerWidth(true) * $('.starContainer .' + useStar).size() );
 		
 		// Detect DK
 		var DKID = iterations[0].element.attr('id').replace(/[^0-9]/g, '');
@@ -216,7 +218,7 @@
 			$('.error, #error-summary').hide();
 			
 			// disable clicking during animation
-			if ( autoForward ) $container.off('click', '.star');
+			if ( autoForward ) $container.off('click', '.' + useStar);
 		
 			var $input = iterations[currentIteration].element,
 				$target = $(this),
@@ -231,7 +233,7 @@
 			}
 			if ( isSingle ) starValue = $.inArray(parseInt(value), valuesArray) + 1;
 			
-			$container.find('.star').slice(0,starValue).addClass('selected');
+			$container.find('.' + useStar).slice(0,starValue).addClass('selected');
 			$input.val(value);
 
 			if ( iterations[currentIteration].element.val() != '' ) $container.find('.nextStatement').show();
@@ -275,7 +277,7 @@
 			$('.error, #error-summary').hide();
 			
 			// disable clicking during animation
-			if ( autoForward ) $container.off('click', '.star');
+			if ( autoForward ) $container.off('click', '.' + useStar);
 		
 			var $input = iterations[currentIteration].element,
 				$target = $(this),
@@ -289,7 +291,7 @@
 				$('input[name="M' + DKID + ' -1"]').prop('checked', false);
 			}
 			
-			$container.find('.star').slice(0,starValue).addClass('selected');
+			$container.find('.' + useStar).slice(0,starValue).addClass('selected');
 			$input.val(value);
 
 			if ( iterations[currentIteration].element.val() != '' ) $container.find('.nextStatement').show();
@@ -301,7 +303,7 @@
 		// Go to the previous loop iteration
 		function previousIteration() {
 			
-			$container.off('click', '.star');
+			$container.off('click', '.' + useStar);
 			// TURN OFF DK TOO??
 			
 			if (currentIteration <= 0) {
@@ -323,7 +325,7 @@
 		// Go to the next loop iteration
 		function nextIteration() {
 			
-			$container.off('click', '.star');
+			$container.off('click', '.' + useStar);
 			// TURN OFF DK TOO??
 			
 			currentIteration++;
@@ -370,7 +372,7 @@
 		// Display the right loop caption and the right responses
 		function displayIteration() {
 			$container
-				.on('click', '.star', isSingle ? selectStarsSingle : selectStarsNumeric);
+				.on('click', '.' + useStar, isSingle ? selectStarsSingle : selectStarsNumeric);
 			
 			if ( showCounter ) {
 				if ( options.countDirection === 'count down' ) $container.find('.counterNumber').html(iterations.length - currentIteration - 1);
@@ -387,19 +389,19 @@
 				else $container.find('.statement').css('filter','').addClass('altStatement');
 			}
 
-			$container.find('.star, .dk').removeClass('selected');
-			$container.find('.star, .dk').removeClass('hover');
+			$container.find('.' + useStar + ', .dk').removeClass('selected');
+			$container.find('.' + useStar + ', .dk').removeClass('hover');
 			
 			if(currentIteration < 0 || currentIteration >= iterations.length){
 				
 			} else {
 				if(iterations[currentIteration] != null){
 					var starValue = isSingle  ? $.inArray(parseInt(iterations[currentIteration].element.val()), valuesArray) + 1 : iterations[currentIteration].element.val();
-					if ( dkSingle && isSingle && $.inArray(parseInt(iterations[currentIteration].element.val()), valuesArray) === $container.find('.star').size() ) {
+					if ( dkSingle && isSingle && $.inArray(parseInt(iterations[currentIteration].element.val()), valuesArray) === $container.find('.' + useStar).size() ) {
 						$container.find('.dk').addClass('selected');
 					} else {
 						if ( starValue == '-1' ) $container.find('.dk').addClass('selected');
-						else $container.find('.star').slice(0,starValue).addClass('selected');
+						else $container.find('.' + useStar).slice(0,starValue).addClass('selected');
 					}
 					if ( iterations[currentIteration].element.val() == '' ) $container.find('.nextStatement').hide();
 				}
@@ -409,12 +411,12 @@
 		function hoverStars(target) {
 			var $starContainer = target.parents('.starContainer');
 			var starValue = $.inArray(parseInt(target.data('value')), valuesArray) + 1;
-			$starContainer.find('.star').slice(0,starValue).addClass('hover');
+			$starContainer.find('.' + useStar).slice(0,starValue).addClass('hover');
 		}
 		
 		function unHoverStars(target) {
 			var $starContainer = target.parents('.starContainer');
-			$starContainer.find('.star').removeClass('hover');
+			$starContainer.find('.' + useStar).removeClass('hover');
 		}
 		
 		function selectDK() {
@@ -426,7 +428,7 @@
 				DKID = $input.attr('id').replace(/[^0-9]/g, '');
 				
 			// unselect all stars
-			$container.find('.star.selected').removeClass('selected');
+			$container.find('.' + useStar + '.selected').removeClass('selected');
 			if ( $(this).hasClass('selected') ) {
 				$(this).removeClass('selected');
 				$input.val('');
@@ -494,7 +496,7 @@
 			}
 		}
 		
-		$container.on('mouseover mouseout', '.star',  function(e) {
+		$container.on('mouseover mouseout', '.' + useStar,  function(e) {
 			
 			if (e.type == 'mouseover') {
 				hoverStars($(this))
@@ -512,7 +514,7 @@
 				easing = (!$.support.transition)?'swing':'snap';
 			
 			var $starContainer = $('.starContainer');
-			$starContainer.find('.star').each(function forEachItem() {
+			$starContainer.find('.' + useStar).each(function forEachItem() {
 				$(this).css({ x: 2000, opacity: 0 }).transition({ x: 0, opacity: 1, delay: delay }, options.animationSpeed, easing);
 				delay += 30;
 			});

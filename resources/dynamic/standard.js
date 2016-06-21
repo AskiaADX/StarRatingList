@@ -1,6 +1,7 @@
 /* standard.js */
 $(window).load(function() {
 	$('#adc_{%= CurrentADC.InstanceId %}').adcStarratingList({
+      	use : '{%= CurrentADC.PropValue("use") %}',
 		maxWidth : '{%= CurrentADC.PropValue("maxWidth") %}',
 		controlWidth : '{%= CurrentADC.PropValue("controlWidth") %}',
 		maxImageWidth : '{%= CurrentADC.PropValue("maxImageWidth") %}',

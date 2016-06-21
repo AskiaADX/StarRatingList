@@ -7,14 +7,15 @@
   <info>
     <name>adc2-starratingList</name>
     <guid>995b8259-2cec-4368-b733-d7ea6eec68a9</guid>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <date>2014-07-03</date>
     <description><![CDATA[v1.0.1 - Fixed error thrown in IE8 because of old & unused code
 		v1.0.2 - Fixed empty element in itteration loop when numeric question (see github change)
 		v1.0.3 - Fixed a wrong loop iteration count
 		v1.0.4 - JD - Fixed encoding of caption
 		           - Fixed hover problem on mobile/tablet
-		v1.0.5 - JD - Added autoForwardLastIteration parameter to go to the next screen after the last iteration]]></description>
+		v1.0.5 - JD - Added autoForwardLastIteration parameter to go to the next screen after the last iteration
+		v1.0.6 - JD - Added use parameter]]></description>
     <company>Askia</company>
     <author><![CDATA[Paul Ferreira <paulf@askia.com>        Jerome Duparc <jeromed@askia.com>]]></author>
     <site>http://www.askia.com</site>
@@ -58,6 +59,10 @@
       <content fileName="star.png" type="image" mode="static" position="none" />
       <content fileName="next.png" type="image" mode="static" position="none" />
       <content fileName="prev.png" type="image" mode="static" position="none" />
+      <content fileName="heart.png" type="image" mode="static" position="none" />
+      <content fileName="sun.png" type="image" mode="static" position="none" />
+      <content fileName="thumb.png" type="image" mode="static" position="none" />
+      <content fileName="tick.png" type="image" mode="static" position="none" />
     </output>
     <output id="fallback">
       <description><![CDATA[Fallback when the browser doesn&acute;t support Javascript]]></description>
@@ -71,6 +76,17 @@
   </outputs>
   <properties>
     <category id="general" name="General">
+      <property xsi:type="standardProperty" id="use" name="Use" type="string" mode="dynamic" require="true" visible="true">
+        <description><![CDATA[Image to use]]></description>
+        <value><![CDATA[star]]></value>
+        <options>
+          <option value="star" text="Star" />
+          <option value="heart" text="Heart" />
+          <option value="tick" text="Tick" />
+          <option value="thumb" text="Thumb" />
+          <option value="sun" text="Sun" />
+        </options>
+      </property>
       <property xsi:type="standardProperty" id="fontSize" name="Font Size" type="string" mode="static">
         <description><![CDATA[
           The font size for the control
@@ -83,10 +99,8 @@
         ]]></description>
         <value><![CDATA[100%]]></value>
       </property>
-      <property xsi:type="standardProperty" id="maxWidth" name="Max Width" type="number" mode="static">
-        <description><![CDATA[
-          The maximum width of the control
-        ]]></description>
+      <property xsi:type="standardProperty" id="maxWidth" name="Max Width" type="string" mode="static" require="false" visible="true">
+        <description><![CDATA[The maximum width of the control]]></description>
         <value><![CDATA[100%]]></value>
       </property>
       <property xsi:type="standardProperty" id="controlAlign" name="Control Alignment" type="string" mode="static">

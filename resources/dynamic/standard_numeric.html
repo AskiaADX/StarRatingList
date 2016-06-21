@@ -16,7 +16,7 @@ For j = 1 To ar.Count
 <div style="clear:both;"></div>
 <div class="starContainer {%= inputName %}" data-id="{%= inputName %}">
 {% For i = 1 To numberOfStars %}      
-    <div class="star" data-value="{%= i %}" id="star{%= i %}"></div>
+    <div class="{%= CurrentADC.PropValue("use") %}" data-value="{%= i %}" id="star{%= i %}"></div>
 {% Next %}
 </div>
 <div class="dk" data-value="-1">{%:= CurrentADC.PropValue("dkText")%}</div>
