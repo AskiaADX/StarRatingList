@@ -1,6 +1,11 @@
 @charset "utf-8";
 /* CSS Document */
-
+.adc-starratingList {
+    -moz-user-select: none; 
+	-webkit-user-select: none; 
+	-ms-user-select:none; 
+	user-select:none;
+}
 /* Statements */
 .adc-starratingList .statement, 
 .adc-starratingList .previousStatement,
@@ -159,6 +164,10 @@
 	color:#fff; 
 	margin-left:10px;
 	vertical-align:middle;
+    -moz-user-select: none; 
+	-webkit-user-select: none; 
+	-ms-user-select:none; 
+	user-select:none;
 }
 
 .dk.selected { background:red; }

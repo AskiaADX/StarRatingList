@@ -1,4 +1,4 @@
-﻿/* standard.css */
+/* standard.css */
 {%
 Dim statementTextAlign =CurrentADC.PropValue("statementTextAlign")
 
@@ -297,28 +297,28 @@ EndIF
 	{% EndIF %}
 }
 
-#adc_{%= CurrentADC.InstanceId%} .dk.selected 
+#adc_{%= CurrentADC.InstanceId%} .dk.selected, #adc_{%= CurrentADC.InstanceId%} .dk.selected:hover 
 {	
     /* Decoration */	
 	{% IF CurrentADC.PropValue("dkSelectedBorderThickness") = "none" Then %}
-		border: none;
+		border: none !important;
 	{% Else %}
-		border: {%= dkSelectedBorderThickness%} {%= dkSelectedBorderStyle%} rgb({%= dkSelectedBorderColour%});
+		border: {%= dkSelectedBorderThickness%} {%= dkSelectedBorderStyle%} rgb({%= dkSelectedBorderColour%}) !important;
 	{% EndIF %}	
-	background: rgb({%= dkSelectedColourPrimary%}); 
-	background: -moz-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%, rgb({%= dkSelectedColourSecondary%}) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb({%= dkSelectedColourPrimary%})), color-stop(100%,rgb({%= dkSelectedColourSecondary%}))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr={%= dkSelectedColourPrimary.ToHexa()%}, endColorstr={%= dkSelectedColourSecondary.ToHexa()%},GradientType=0 ); /* IE6-8 */
+	background: rgb({%= dkSelectedColourPrimary%}) !important; 
+	background: -moz-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%, rgb({%= dkSelectedColourSecondary%}) 100%) !important; /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb({%= dkSelectedColourPrimary%})), color-stop(100%,rgb({%= dkSelectedColourSecondary%}))) !important; /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%) !important; /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%) !important; /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%) !important; /* IE10+ */
+	background: linear-gradient(to bottom,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%) !important; /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr={%= dkSelectedColourPrimary.ToHexa()%}, endColorstr={%= dkSelectedColourSecondary.ToHexa()%},GradientType=0)  !important; /* IE6-8 */
 	
 	-webkit-box-shadow: {%= dkSelectedShadow%};
 	-moz-box-shadow: {%= dkSelectedShadow%};
 	box-shadow: {%= dkSelectedShadow%};
 
-    color:rgb({%= dkSelectedFontColour%});
+    color:rgb({%= dkSelectedFontColour%}) !important;
 }
 
 /*---------------- TOOLTIPS ----------------*/
