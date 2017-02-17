@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<control  xmlns="http://www.askia.com/ADCSchema"
+<control  xmlns="http://www.askia.com/2.0.0/ADCSchema"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://www.askia.com/ADCSchema http://www.askia.com/Downloads/dev/schemas/adc2.0/Config.xsd"
+          xsi:schemaLocation="http://www.askia.com/2.0.0/ADCSchema https://raw.githubusercontent.com/AskiaADX/ADXSchema/2.0.0/ADCSchema.xsd"
           version="2.0.0"
           askiaCompat="5.3.3">
   <info>
     <name>adc2-starratingList</name>
     <guid>995b8259-2cec-4368-b733-d7ea6eec68a9</guid>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <date>2014-07-03</date>
     <description><![CDATA[v1.0.1 - Fixed error thrown in IE8 because of old & unused code
 		v1.0.2 - Fixed empty element in itteration loop when numeric question (see github change)
@@ -16,7 +16,8 @@
 		           - Fixed hover problem on mobile/tablet
 		v1.0.5 - JD - Added autoForwardLastIteration parameter to go to the next screen after the last iteration
 		v1.0.6 - JD - Added use parameter
-		v1.0.7 - JD - Fixed dk hover when selected]]></description>
+		v1.0.7 - JD - Fixed dk hover when selected
+		v1.0.8 - JD - Fixed element name]]></description>
     <company>Askia</company>
     <author><![CDATA[Paul Ferreira <paulf@askia.com>        Jerome Duparc <jeromed@askia.com>]]></author>
     <site>http://www.askia.com</site>

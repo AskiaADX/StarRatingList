@@ -1,4 +1,4 @@
-﻿{% 
+{% 
 Dim i 
 Dim j
 Dim inputName
@@ -12,7 +12,7 @@ For j = 2 to avR.Count
 Next
 
 For i = 1 To ar.Count 
-	inputName = CurrentQuestion.Iteration(i).InputName() 
+	inputName = CurrentQuestion.Iteration(ar[i].Index).InputName() 
 	%}
 {element : $('#{%= inputName%}'), allValues : "{%= allValues%}"}{%= On(i < ar.Count, ",", "") %}
 {% Next %}
