@@ -235,6 +235,9 @@
 			
 			$container.find('.' + useStar).slice(0,starValue).addClass('selected');
 			$input.val(value);
+            if (window.askia) {
+                askia.triggerAnswer();
+            }
 
 			if ( iterations[currentIteration].element.val() != '' ) $container.find('.nextStatement').show();
 			
@@ -293,6 +296,9 @@
 			
 			$container.find('.' + useStar).slice(0,starValue).addClass('selected');
 			$input.val(value);
+            if (window.askia) {
+                askia.triggerAnswer();
+            }
 
 			if ( iterations[currentIteration].element.val() != '' ) $container.find('.nextStatement').show();
 			
@@ -438,6 +444,9 @@
 				$input.val(value);
 				$('input[name="M' + DKID + ' -1"]').prop('checked', true);
 			}
+            if (window.askia) {
+                askia.triggerAnswer();
+            }
 			
 			if ( iterations[currentIteration].element.val() != '' ) $container.find('.nextStatement').show();
 			

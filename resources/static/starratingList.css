@@ -17,22 +17,6 @@
     vertical-align:middle;
 	cursor:pointer;
 	
-	/* Decoration */
-	border: 1px solid #000;
-	background: #fff; 
-	background: -webkit-gradient(linear, 0 0, 0 100%, from( #fff ) to( #cecece )); 
-	background: -webkit-linear-gradient( #fff , #cecece ); 
-	background: -moz-linear-gradient( 	 #fff , #cecece ); 
-	background: -ms-linear-gradient( 	 #fff , #cecece ); 
-	background: -o-linear-gradient( 	 #fff , #cecece ); 
-	background: linear-gradient( 		 #fff , #cecece ); 	
-	
-	/* Effects */
-	-webkit-border-radius:	5px 5px 5px 5px; 
-	-moz-border-radius:		5px 5px 5px 5px; 
-	-khtml-border-radius:	5px 5px 5px 5px; 
-	border-radius:			5px 5px 5px 5px; 
-	
 	/* disable highlight text */
 	-moz-user-select: none; 
 	-webkit-user-select: none; 
@@ -53,8 +37,6 @@
 { 
 	display:block;
 	padding:10px;
-	font-size:12px;
-	color:#000;
 }
 .adc-starratingList .statement { margin-bottom:10px; cursor:default; }
 .adc-starratingList .statement img {
@@ -71,22 +53,6 @@
     vertical-align:middle;
 	cursor:pointer;
 	
-	/* Decoration */
-	border: 1px solid #000;
-	background: #fff; 
-	background: -webkit-gradient(linear, 0 0, 0 100%, from( #fff ) to( #cecece )); 
-	background: -webkit-linear-gradient( #fff , #cecece ); 
-	background: -moz-linear-gradient( 	 #fff , #cecece ); 
-	background: -ms-linear-gradient( 	 #fff , #cecece ); 
-	background: -o-linear-gradient( 	 #fff , #cecece ); 
-	background: linear-gradient( 		 #fff , #cecece ); 	
-	
-	/* Effects */
-	-webkit-border-radius:	5px 5px 5px 5px; 
-	-moz-border-radius:		5px 5px 5px 5px; 
-	-khtml-border-radius:	5px 5px 5px 5px; 
-	border-radius:			5px 5px 5px 5px; 
-	
 	/* disable highlight text */
 	-moz-user-select: none; 
 	-webkit-user-select: none; 
@@ -99,7 +65,7 @@
 .adc-starratingList .nextStatement .img { display:block; height:100%; width:100%; background:url(next.png) center left no-repeat; }
 .adc-starratingList .previousStatement .img { display:block; height:100%; width:100%; background:url(prev.png) center left no-repeat; }
 
-.star, .heart, .tick, .thumb, .sun {
+.adc-starratingList .star, .adc-starratingList .heart, .adc-starratingList .tick, .adc-starratingList .thumb, .adc-starratingList .sun {
 	display:block;
 	width:50px;
 	height:50px;
@@ -109,40 +75,40 @@
 	/*position:relative;*/
 }
 
-.star {
+.adc-starratingList .star {
 	background:url('star.png') top no-repeat;
 }
-.star.selected, .star.hover {
+.adc-starratingList .star.selected, .adc-starratingList .star.hover {
 	background:url('star.png') bottom no-repeat;
 }
-.heart {
+.adc-starratingList .heart {
 	background:url('heart.png') top no-repeat;
 }
-.heart.selected, .heart.hover {
+.adc-starratingList .heart.selected, .adc-starratingList .heart.hover {
 	background:url('heart.png') bottom no-repeat;
 }
-.tick {
+.adc-starratingList .tick {
 	background:url('tick.png') top no-repeat;
 }
-.tick.selected, .tick.hover {
+.adc-starratingList .tick.selected, .adc-starratingList .tick.hover {
 	background:url('tick.png') bottom no-repeat;
 }
-.thumb {
+.adc-starratingList .thumb {
 	background:url('thumb.png') top no-repeat;
 }
-.thumb.selected, .thumb.hover {
+.adc-starratingList .thumb.selected, .adc-starratingList .thumb.hover {
 	background:url('thumb.png') bottom no-repeat;
 }
-.sun {
+.adc-starratingList .sun {
 	background:url('sun.png') top no-repeat;
 }
-.sun.selected, .sun.hover {
+.adc-starratingList .sun.selected, .adc-starratingList .sun.hover {
 	background:url('sun.png') bottom no-repeat;
 }
 
-.controlContainer { display:block; margin-bottom:10px; }
-.starContainer { display:inline-block; /*overflow:hidden;*/ vertical-align:middle; margin-bottom:10px; }
-.captionContainer { 
+.adc-starratingList .controlContainer { display:block; margin-bottom:10px; }
+.adc-starratingList .starContainer { display:inline-block; /*overflow:hidden;*/ vertical-align:middle; margin-bottom:10px; }
+.adc-starratingList .captionContainer { 
 	float:left; 
 	
 	/* disable highlight text */
@@ -153,15 +119,12 @@
 	
 	vertical-align:middle;
 }
-.caption { margin-right:10px; line-height:140%; }
+.adc-starratingList .caption { margin-right:10px; line-height:1.2; }
 
-.dk { 
+.adc-starratingList .dk { 
 	cursor:pointer;
 	display:inline-block; 
 	padding:10px; 
-	border:1px solid #333; 
-	background:#1369C4; 
-	color:#fff; 
 	margin-left:10px;
 	vertical-align:middle;
     -moz-user-select: none; 
@@ -169,5 +132,20 @@
 	-ms-user-select:none; 
 	user-select:none;
 }
-
-.dk.selected { background:red; }
+.adc-starratingList .tooltip {
+  position: relative;
+}
+.adc-starratingList .tooltip span {
+  margin-left: -999em;
+  position: absolute;
+}
+.adc-starratingList .tooltip:hover span {
+  position: absolute;
+  left: 1em;
+  top: 2em;
+  z-index: 99;
+  margin-left: 0;
+  width: auto;
+}
+.adc-starratingList .custom { padding: 0.5em 0.8em 0.8em 2em; }
+.adc-starratingList a:hover { background: transparent; }

@@ -3,9 +3,7 @@
 Dim statementTextAlign =CurrentADC.PropValue("statementTextAlign")
 
 Dim statementColourPrimary =CurrentADC.PropValue("statementColourPrimary")
-Dim statementColourSecondary =CurrentADC.PropValue("statementColourSecondary")
 Dim altStatementColourPrimary =CurrentADC.PropValue("altStatementColourPrimary")
-Dim altStatementColourSecondary =CurrentADC.PropValue("altStatementColourSecondary")
 Dim statementFontColour =CurrentADC.PropValue("statementFontColour")
 Dim statementBorderColour =CurrentADC.PropValue("statementBorderColour")
 Dim statementBorderRadius =CurrentADC.PropValue("statementBorderRadius")
@@ -24,7 +22,6 @@ Dim counterBorderColour =CurrentADC.PropValue("counterBorderColour")
 Dim counterBorderRadius =CurrentADC.PropValue("counterBorderRadius")
 Dim counterBorderWidth =CurrentADC.PropValue("counterBorderWidth")
 Dim counterPrimaryColour =CurrentADC.PropValue("counterPrimaryColour")
-Dim counterSecondaryColour =CurrentADC.PropValue("counterSecondaryColour")
 Dim counterFontColour =CurrentADC.PropValue("counterFontColour")
 Dim counterDropShadow =CurrentADC.PropValue("counterDropShadow")
 Dim counterAlign =CurrentADC.PropValue("counterAlign")
@@ -33,7 +30,6 @@ Dim buttonBorderColour =CurrentADC.PropValue("buttonBorderColour")
 Dim buttonBorderRadius =CurrentADC.PropValue("buttonBorderRadius")
 Dim buttonBorderWidth =CurrentADC.PropValue("buttonBorderWidth")
 Dim buttonPrimaryColour =CurrentADC.PropValue("buttonPrimaryColour")
-Dim buttonSecondaryColour =CurrentADC.PropValue("buttonSecondaryColour")
 Dim buttonDropShadow =CurrentADC.PropValue("buttonDropShadow")
 Dim buttonArrowColour =CurrentADC.PropValue("buttonArrowColour")
 
@@ -42,7 +38,6 @@ Dim tooltipFontColour =CurrentADC.PropValue("tooltipFontColour")
 Dim tooltipCurvedCorners =CurrentADC.PropValue("tooltipCurvedCorners")
 
 Dim tooltipColourPrimary =CurrentADC.PropValue("tooltipColourPrimary")
-Dim tooltipColourSecondary =CurrentADC.PropValue("tooltipColourSecondary")
 Dim tooltipBorderColour =CurrentADC.PropValue("tooltipBorderColour")
 Dim tooltipBorderThickness =CurrentADC.PropValue("tooltipBorderThickness")
 Dim tooltipBorderStyle =CurrentADC.PropValue("tooltipBorderStyle")
@@ -51,7 +46,6 @@ Dim borderRadius =CurrentADC.PropValue("borderRadius")
 Dim dkTextPadding =CurrentADC.PropValue("dkTextPadding")
 Dim dkMargin =CurrentADC.PropValue("dkMargin")
 Dim dkColourPrimary =CurrentADC.PropValue("dkColourPrimary")
-Dim dkColourSecondary =CurrentADC.PropValue("dkColourSecondary")
 Dim dkFontColour =CurrentADC.PropValue("dkFontColour")
 Dim dkBorderColour =CurrentADC.PropValue("dkBorderColour")
 Dim dkBorderThickness =CurrentADC.PropValue("dkBorderThickness")
@@ -59,7 +53,6 @@ Dim dkBorderStyle =CurrentADC.PropValue("dkBorderStyle")
 Dim dkShadow =CurrentADC.PropValue("dkShadow")
 Dim showDkHoverColour =CurrentADC.PropValue("showDkHoverColour")
 Dim dkHoverColourPrimary =CurrentADC.PropValue("dkHoverColourPrimary")
-Dim dkHoverColourSecondary =CurrentADC.PropValue("dkHoverColourSecondary")
 Dim showDkHoverFontColour =CurrentADC.PropValue("showDkHoverFontColour")
 Dim dkHoverFontColour =CurrentADC.PropValue("dkHoverFontColour")
 Dim showDkHoverBorder =CurrentADC.PropValue("showDkHoverBorder")
@@ -69,7 +62,6 @@ Dim dkHoverBorderStyle =CurrentADC.PropValue("dkHoverBorderStyle")
 Dim showDkHoverShadow =CurrentADC.PropValue("showDkHoverShadow")
 Dim dkHoverShadow =CurrentADC.PropValue("dkHoverShadow")
 Dim dkSelectedColourPrimary =CurrentADC.PropValue("dkSelectedColourPrimary")
-Dim dkSelectedColourSecondary =CurrentADC.PropValue("dkSelectedColourSecondary")
 Dim dkSelectedFontColour =CurrentADC.PropValue("dkSelectedFontColour")
 Dim dkSelectedBorderColour =CurrentADC.PropValue("dkSelectedBorderColour")
 Dim dkSelectedBorderThickness =CurrentADC.PropValue("dkSelectedBorderThickness")
@@ -114,14 +106,7 @@ EndIF
 	{% Else %}
 		border: {%= statementBorderThickness%} {%= statementBorderStyle%} rgb({%= statementBorderColour%});
 	{% EndIF %}	
-	background: rgb({%= statementColourPrimary%}); 
-	background: -moz-linear-gradient(top,  rgb({%= statementColourPrimary%}) 0%, rgb({%= statementColourSecondary%}) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb({%= statementColourPrimary%})), color-stop(100%,rgb({%= statementColourSecondary%}))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgb({%= statementColourPrimary%}) 0%,rgb({%= statementColourSecondary%}) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgb({%= statementColourPrimary%}) 0%,rgb({%= statementColourSecondary%}) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgb({%= statementColourPrimary%}) 0%,rgb({%= statementColourSecondary%}) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgb({%= statementColourPrimary%}) 0%,rgb({%= statementColourSecondary%}) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr={%= statementColourPrimary.ToHexa()%}, endColorstr={%= statementColourSecondary.ToHexa()%},GradientType=0 ); /* IE6-8 */
+	background-color: rgb({%= statementColourPrimary%});
 	
 	/* Effects */
 	-webkit-border-radius:	{%= statementBorderRadius%}; 
@@ -140,14 +125,7 @@ EndIF
 #adc_{%= CurrentADC.InstanceId%} .altStatement 
 {
 
-	background: rgb({%= altStatementColourPrimary%}); 
-	background: -moz-linear-gradient(top,  rgb({%= altStatementColourPrimary%}) 0%, rgb({%= altStatementColourSecondary%}) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb({%= altStatementColourPrimary%})), color-stop(100%,rgb({%= altStatementColourSecondary%}))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgb({%= altStatementColourPrimary%}) 0%,rgb({%= altStatementColourSecondary%}) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgb({%= altStatementColourPrimary%}) 0%,rgb({%= altStatementColourSecondary%}) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgb({%= altStatementColourPrimary%}) 0%,rgb({%= altStatementColourSecondary%}) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgb({%= altStatementColourPrimary%}) 0%,rgb({%= altStatementColourSecondary%}) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr={%= altStatementColourPrimary.ToHexa()%}, endColorstr={%= altStatementColourSecondary.ToHexa()%},GradientType=0 ); /* IE6-8 */
+	background-color: rgb({%= altStatementColourPrimary%});
 
 }
 
@@ -168,14 +146,7 @@ EndIF
 	{% Else %}
 		border: {%= counterBorderWidth%} solid rgb({%= counterBorderColour%});
 	{% EndIF %}	
-	background: rgb({%= counterPrimaryColour%}); 
-	background: -moz-linear-gradient(top,  rgb({%= counterPrimaryColour%}) 0%, rgb({%= counterSecondaryColour%}) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb({%= counterPrimaryColour%})), color-stop(100%,rgb({%= counterSecondaryColour%}))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgb({%= counterPrimaryColour%}) 0%,rgb({%= counterSecondaryColour%}) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgb({%= counterPrimaryColour%}) 0%,rgb({%= counterSecondaryColour%}) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgb({%= counterPrimaryColour%}) 0%,rgb({%= counterSecondaryColour%}) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgb({%= counterPrimaryColour%}) 0%,rgb({%= counterSecondaryColour%}) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr={%= counterPrimaryColour.ToHexa()%}, endColorstr={%= counterSecondaryColour.ToHexa()%},GradientType=0 ); /* IE6-8 */
+	background-color: rgb({%= counterPrimaryColour%});
 	
 	display:inline-block; 
 	border-radius:{%= counterBorderRadius%}; 
@@ -199,14 +170,7 @@ EndIF
 	{% Else %}
 		border: {%= buttonBorderWidth%} solid rgb({%= buttonBorderColour%});
 	{% EndIF %}	
-	background: rgb({%= buttonPrimaryColour%}); 
-	background: -moz-linear-gradient(top,  rgb({%= buttonPrimaryColour%}) 0%, rgb({%= buttonSecondaryColour%}) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb({%= buttonPrimaryColour%})), color-stop(100%,rgb({%= buttonSecondaryColour%}))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgb({%= buttonPrimaryColour%}) 0%,rgb({%= buttonSecondaryColour%}) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgb({%= buttonPrimaryColour%}) 0%,rgb({%= buttonSecondaryColour%}) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgb({%= buttonPrimaryColour%}) 0%,rgb({%= buttonSecondaryColour%}) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgb({%= buttonPrimaryColour%}) 0%,rgb({%= buttonSecondaryColour%}) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr={%= buttonPrimaryColour.ToHexa()%}, endColorstr={%= buttonSecondaryColour.ToHexa()%},GradientType=0 ); /* IE6-8 */
+	background-color: rgb({%= buttonPrimaryColour%});
 	
 	/* Effects */
 	-webkit-border-radius:	{%= buttonBorderRadius%}; 
@@ -223,8 +187,8 @@ EndIF
 #adc_{%= CurrentADC.InstanceId%} .nextStatement .img, #adc_{%= CurrentADC.InstanceId%} .previousStatement .img { background-position:{%= buttonArrowColour%}; }
 
 #adc_{%= CurrentADC.InstanceId%} .qtip-content { 
-	color:rgb({%= tooltipFontColour%}) !important; 
-	font-size:{%= tooltipFontSize%} !important;
+	color:rgb({%= tooltipFontColour%}); 
+	font-size:{%= tooltipFontSize%};
 }
 
 #adc_{%= CurrentADC.InstanceId%} .dk { 
@@ -239,14 +203,7 @@ EndIF
 	{% Else %}
 		border: {%= dkBorderThickness%} {%= dkBorderStyle%} rgb({%= dkBorderColour%});
 	{% EndIF %}	
-	background: rgb({%= dkColourPrimary%}); 
-	background: -moz-linear-gradient(top,  rgb({%= dkColourPrimary%}) 0%, rgb({%= dkColourSecondary%}) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb({%= dkColourPrimary%})), color-stop(100%,rgb({%= dkColourSecondary%}))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgb({%= dkColourPrimary%}) 0%,rgb({%= dkColourSecondary%}) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgb({%= dkColourPrimary%}) 0%,rgb({%= dkColourSecondary%}) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgb({%= dkColourPrimary%}) 0%,rgb({%= dkColourSecondary%}) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgb({%= dkColourPrimary%}) 0%,rgb({%= dkColourSecondary%}) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr={%= dkColourPrimary.ToHexa()%}, endColorstr={%= dkColourSecondary.ToHexa()%},GradientType=0 ); /* IE6-8 */
+	background-color: rgb({%= dkColourPrimary%});
 	
 	/* Effects */
 	-webkit-border-radius:	{%= borderRadius%}; 
@@ -271,20 +228,13 @@ EndIF
 	/* Element */	
 	/* Decoration */
 	{% IF showDkHoverBorder = "1" Then %}
-		border: {%= dkHoverBorderThickness%} {%= dkHoverBorderStyle%} rgb({%= dkHoverBorderColour%}) !important;
+		border: {%= dkHoverBorderThickness%} {%= dkHoverBorderStyle%} rgb({%= dkHoverBorderColour%});
 	{% Else %}
-		border: {%= dkBorderThickness%} {%= dkBorderStyle%} rgb({%= dkBorderColour%}) !important;
+		border: {%= dkBorderThickness%} {%= dkBorderStyle%} rgb({%= dkBorderColour%});
 	{% EndIF %}
 	
 	{% IF showDkHoverColour = "1" Then %}
-		background: rgb({%= dkHoverColourPrimary%}) !important;
-		background: -moz-linear-gradient(top,  rgb({%= dkHoverColourPrimary%}) 0%, rgb({%= dkHoverColourSecondary%}) 100%) !important; /* FF3.6+ */
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb({%= dkHoverColourPrimary%})), color-stop(100%,rgb({%= dkHoverColourSecondary%}))) !important; /* Chrome,Safari4+ */
-		background: -webkit-linear-gradient(top,  rgb({%= dkHoverColourPrimary%}) 0%,rgb({%= dkHoverColourSecondary%}) 100%) !important; /* Chrome10+,Safari5.1+ */
-		background: -o-linear-gradient(top,  rgb({%= dkHoverColourPrimary%}) 0%,rgb({%= dkHoverColourSecondary%}) 100%) !important; /* Opera 11.10+ */
-		background: -ms-linear-gradient(top,  rgb({%= dkHoverColourPrimary%}) 0%,rgb({%= dkHoverColourSecondary%}) 100%) !important; /* IE10+ */
-		background: linear-gradient(to bottom,  rgb({%= dkHoverColourPrimary%}) 0%,rgb({%= dkHoverColourSecondary%}) 100%) !important; /* W3C */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='{%= dkHoverColourPrimary.ToHexa()%}', endColorstr='{%= dkHoverColourSecondary.ToHexa()%}',GradientType=0 ) !important; /* IE6-8 */
+		background-color: rgb({%= dkHoverColourPrimary%});
 	{% EndIF %}
 	{% IF showDkHoverShadow = "1" Then %}
 		-webkit-box-shadow: {%= dkHoverShadow%};
@@ -293,7 +243,7 @@ EndIF
 	{% EndIF %}
 	
 	{% IF showDkHoverFontColour = "1" Then %}
-		color:rgb({%= dkHoverFontColour%}) !important;
+		color:rgb({%= dkHoverFontColour%});
 	{% EndIF %}
 }
 
@@ -301,55 +251,26 @@ EndIF
 {	
     /* Decoration */	
 	{% IF CurrentADC.PropValue("dkSelectedBorderThickness") = "none" Then %}
-		border: none !important;
+		border: none;
 	{% Else %}
-		border: {%= dkSelectedBorderThickness%} {%= dkSelectedBorderStyle%} rgb({%= dkSelectedBorderColour%}) !important;
+		border: {%= dkSelectedBorderThickness%} {%= dkSelectedBorderStyle%} rgb({%= dkSelectedBorderColour%});
 	{% EndIF %}	
-	background: rgb({%= dkSelectedColourPrimary%}) !important; 
-	background: -moz-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%, rgb({%= dkSelectedColourSecondary%}) 100%) !important; /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb({%= dkSelectedColourPrimary%})), color-stop(100%,rgb({%= dkSelectedColourSecondary%}))) !important; /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%) !important; /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%) !important; /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%) !important; /* IE10+ */
-	background: linear-gradient(to bottom,  rgb({%= dkSelectedColourPrimary%}) 0%,rgb({%= dkSelectedColourSecondary%}) 100%) !important; /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr={%= dkSelectedColourPrimary.ToHexa()%}, endColorstr={%= dkSelectedColourSecondary.ToHexa()%},GradientType=0)  !important; /* IE6-8 */
+	background: rgb({%= dkSelectedColourPrimary%});
 	
 	-webkit-box-shadow: {%= dkSelectedShadow%};
 	-moz-box-shadow: {%= dkSelectedShadow%};
 	box-shadow: {%= dkSelectedShadow%};
 
-    color:rgb({%= dkSelectedFontColour%}) !important;
+    color:rgb({%= dkSelectedFontColour%});
 }
 
 /*---------------- TOOLTIPS ----------------*/
 
-.tooltip {
-  position: relative;
-}
-.tooltip span {
-  margin-left: -999em;
-  position: absolute;
-}
-.tooltip:hover span {
-  position: absolute;
-  left: 1em;
-  top: 2em;
-  z-index: 99;
-  margin-left: 0;
-  width: auto;
-}
-.classic { 
+#adc_{%= CurrentADC.InstanceId%} .classic { 
 	text-decoration:none;
 	padding: 8px 10px;
 	
-	background: rgb({%= tooltipColourPrimary%}); 
-	background: -moz-linear-gradient(top,  rgb({%= tooltipColourPrimary%}) 0%, rgb({%= tooltipColourSecondary%}) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb({%= tooltipColourPrimary%})), color-stop(100%,rgb({%= tooltipColourSecondary%}))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgb({%= tooltipColourPrimary%}) 0%,rgb({%= tooltipColourSecondary%}) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgb({%= tooltipColourPrimary%}) 0%,rgb({%= tooltipColourSecondary%}) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgb({%= tooltipColourPrimary%}) 0%,rgb({%= tooltipColourSecondary%}) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgb({%= tooltipColourPrimary%}) 0%,rgb({%= tooltipColourSecondary%}) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr={%= tooltipColourPrimary.ToHexa()%}, endColorstr={%= tooltipColourSecondary.ToHexa()%},GradientType=0 ); /* IE6-8 */
+	background-color: rgb({%= tooltipColourPrimary%});
 	
 	font-size: {%= tooltipFontSize%};
 	color: rgb({%= tooltipFontColour%});
@@ -364,9 +285,4 @@ EndIF
 	-moz-border-radius:		{%= tooltipCurvedCorners%}; 
 	-khtml-border-radius:	{%= tooltipCurvedCorners%}; 
 	border-radius:			{%= tooltipCurvedCorners%};
-	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-	-webkit-box-shadow: 2px 2px rgba(0, 0, 0, 0.1);
-	-moz-box-shadow: 2px 2px rgba(0, 0, 0, 0.1);
 }
-.custom { padding: 0.5em 0.8em 0.8em 2em; }
-* html a:hover { background: transparent; }
