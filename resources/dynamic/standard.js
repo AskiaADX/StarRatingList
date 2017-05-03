@@ -21,6 +21,7 @@ $(window).load(function() {
 		showTooltips: {%= (CurrentADC.PropValue("showTooltips") = "1") %},
 		dkSingle: {%= (CurrentADC.PropValue("dkSingle") = "1") %},
 		dkLeftMargin: '{%= CurrentADC.PropValue("dkLeftMargin") %}',
+      	currentQuestion: '{%:= CurrentQuestion.Shortcut %}',
         autoForwardLastIteration: {%= (CurrentADC.PropValue("autoForwardLastIteration") = "1") %},
 		iterations: [
 			{% IF CurrentQuestion.Type = "single" Then %}

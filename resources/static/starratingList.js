@@ -43,6 +43,7 @@
         (options.autoForwardLastIteration = Boolean(options.autoForwardLastIteration) || false);
 		(options.scrollToTop = Boolean(options.scrollToTop) || false);
 		(options.showCounter = Boolean(options.showCounter) || false);
+        (options.currentQuestion = options.currentQuestion || '');
 				
 		// Delegate .transition() calls to .animate() if the browser can't do CSS transitions.
 		if (!$.support.transition) $.fn.transition = $.fn.animate;
@@ -235,7 +236,10 @@
 			
 			$container.find('.' + useStar).slice(0,starValue).addClass('selected');
 			$input.val(value);
-            if (window.askia) {
+            if (window.askia 
+                && window.arrLiveRoutingShortcut 
+                && window.arrLiveRoutingShortcut.length > 0
+                && window.arrLiveRoutingShortcut.indexOf(options.currentQuestion) >= 0) {
                 askia.triggerAnswer();
             }
 
@@ -296,7 +300,10 @@
 			
 			$container.find('.' + useStar).slice(0,starValue).addClass('selected');
 			$input.val(value);
-            if (window.askia) {
+            if (window.askia 
+                && window.arrLiveRoutingShortcut 
+                && window.arrLiveRoutingShortcut.length > 0
+                && window.arrLiveRoutingShortcut.indexOf(options.currentQuestion) >= 0) {
                 askia.triggerAnswer();
             }
 
@@ -444,7 +451,10 @@
 				$input.val(value);
 				$('input[name="M' + DKID + ' -1"]').prop('checked', true);
 			}
-            if (window.askia) {
+            if (window.askia 
+                && window.arrLiveRoutingShortcut 
+                && window.arrLiveRoutingShortcut.length > 0
+                && window.arrLiveRoutingShortcut.indexOf(options.currentQuestion) >= 0) {
                 askia.triggerAnswer();
             }
 			
