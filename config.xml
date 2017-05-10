@@ -227,7 +227,7 @@
       </property>
       <property xsi:type="standardProperty" id="buttonBorderColour" name="Button Border Colour" type="color" mode="dynamic" require="true" visible="false">
         <description><![CDATA[Border colour of buttons]]></description>
-        <value><![CDATA[{%= Theme.NeutralDarkColor %}]]></value>
+        <value><![CDATA[{%= Theme.PrimaryDarkColor %}]]></value>
       </property>
       <property xsi:type="standardProperty" id="buttonBorderRadius" name="Button Border Radius" type="string" mode="dynamic" require="true" visible="false">
         <description><![CDATA[The amount of curve on the buttons]]></description>
@@ -604,7 +604,7 @@
       </property>
       <property xsi:type="standardProperty" id="dkSelectedBorderColour" name="Selected DK Border Colour" type="color" mode="dynamic" require="true" visible="false">
         <description><![CDATA[Border colour for selected DK]]></description>
-        <value><![CDATA[{%= Theme.NeutralDarkColor %}]]></value>
+        <value><![CDATA[{%= Theme.PrimaryDarkColor %}]]></value>
       </property>
       <property xsi:type="standardProperty" id="dkSelectedBorderThickness" name="Selected DK Border Thickness" type="string" mode="dynamic" require="true" visible="false">
         <description><![CDATA[The thickness of the border around the selected DK]]></description>
