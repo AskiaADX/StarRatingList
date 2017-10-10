@@ -195,7 +195,7 @@
 			throw new Error('adcStatementList expect an option argument with an array of iterations');
 		}
         
-        nextBtn = document.querySelector('input[value="Next"]');
+        nextBtn = document.querySelector('input[name="Next"]');
 		
         container.style.maxWidth = options.maxWidth;
         container.style.width = options.controlWidth;

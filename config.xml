@@ -7,7 +7,7 @@
   <info>
     <name>StarRatingList</name>
     <guid>995b8259-2cec-4368-b733-d7ea6eec68a9</guid>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
     <date>2014-07-03</date>
     <description><![CDATA[v1.0.1 - Fixed error thrown in IE8 because of old & unused code
 		v1.0.2 - Fixed empty element in itteration loop when numeric question (see github change)
@@ -50,10 +50,9 @@
           
         ]]></yield>
       </content>
-      <content fileName="jquery-1.11.0.min.js" type="javascript" mode="share" position="head" />
-      <content fileName="jquery-ui-1.10.4.custom.min.js" type="javascript" mode="share" position="head" />
-      <content fileName="jquery.ui.touch-punch.min.js" type="javascript" mode="share" position="head" />
-      <content fileName="jquery.transit.min.js" type="javascript" mode="share" position="head" />
+      <content fileName="domready.js" type="javascript" mode="share" position="head" />
+      <content fileName="tippy.css" type="css" mode="share" position="head" />
+      <content fileName="tippy.min.js" type="javascript" mode="share" position="head" />
       <content fileName="starratingList.js" type="javascript" mode="static" position="head" />
       <content fileName="standard.js" type="javascript" mode="dynamic" position="foot" />
       <content fileName="standard_single.js" type="javascript" mode="dynamic" position="none" />
