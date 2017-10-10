@@ -1,6 +1,8 @@
-/* standard.js */
-$(window).load(function() {
-	$('#adc_{%= CurrentADC.InstanceId %}').adcStarratingList({
+DomReady.ready(function() {
+     
+    var starRating = new StarRatingList({
+        instanceId : '{%= CurrentADC.InstanceId%}',
+        currentQuestion: '{%:= CurrentQuestion.Shortcut %}',
       	use : '{%= CurrentADC.PropValue("use") %}',
 		maxWidth : '{%= CurrentADC.PropValue("maxWidth") %}',
 		controlWidth : '{%= CurrentADC.PropValue("controlWidth") %}',
@@ -11,7 +13,6 @@ $(window).load(function() {
 		scrollToTop : {%= (CurrentADC.PropValue("scrollToTop") = "1") %},
 		isSingle : {%= (CurrentQuestion.Type = "single") %},
 		animate : {%= (CurrentADC.PropValue("animateResponses") = "1") %},
-		animationSpeed : '{%= CurrentADC.PropValue("animationSpeed") %}',
 		topButtons : '{%= CurrentADC.PropValue("topButtons") %}',
 		bottomButtons : '{%= CurrentADC.PropValue("bottomButtons") %}',
 		showCounter : {%= (CurrentADC.PropValue("showCounter") = "1") %},

@@ -80,6 +80,13 @@ EndIF
 	text-align:{%= controlAlign%};
 }
 
+.animate {
+    -webkit-transition: all .5s ease-in-out;
+     -moz-transition: all .5s ease-in-out;
+     -o-transition: all .5s ease-in-out;
+     transition: all .5s ease-in-out;
+}
+
 #adc_{%= CurrentADC.InstanceId%} .controlContainer { 
 	text-align:{%= controlAlign%};
 	{% IF controlAlign = "center" Then %}
@@ -274,7 +281,7 @@ EndIF
 	
 	font-size: {%= tooltipFontSize%};
 	color: rgb({%= tooltipFontColour%});
-	line-height: 140%;
+	line-height: 1.2;
 	
 	{% IF tooltipBorderThickness <> "none" Then %}
 		border: {%= tooltipBorderThickness%} {%= tooltipBorderStyle%} rgb({%= tooltipBorderColour%});

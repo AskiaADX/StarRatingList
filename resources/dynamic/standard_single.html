@@ -25,7 +25,7 @@ For j = 1 To apr.Count
 {% Next %}
 <div class="starContainer {%= inputName %}" data-id="{%= inputName %}">
 {% For i = 1 To arCount %}      
-    <a class="{%= CurrentADC.PropValue("use") %} {% IF showTooltip = "1" Then %}tooltip{% EndIF %}" data-value="{%= ar[i].inputValue() %}" id="star{%= i %}">{% IF showTooltip = "1" Then %}<span class="classic">{%:= CurrentQuestion.AvailableResponses[i].Caption %}</span>{% EndIF %}</a>
+    <a class="{%= CurrentADC.PropValue("use") %}" data-value="{%= ar[i].inputValue() %}" id="star{%= i %}" {% IF showTooltip = "1" Then %}title="{%:= CurrentQuestion.AvailableResponses[i].Caption %}"{% EndIF %}></a>
 {% Next %}
 </div>
 {% IF dkSingle = "1" Then %}

@@ -1,68 +1,86 @@
-(function ($) {
-	"use strict";
+(function () {
+    
+     // Polyfill: Add a getElementsByClassName function IE < 9
+    function polyfillGetElementsByClassName() {
+        if (!document.getElementsByClassName) {
+            document.getElementsByClassName = function(search) {
+                var d = document, elements, pattern, i, results = [];
+                if (d.querySelectorAll) { // IE8
+                    return d.querySelectorAll("." + search);
+                }
+                if (d.evaluate) { // IE6, IE7
+                    pattern = ".//*[contains(concat(' ', @class, ' '), ' " + search + " ')]";
+                    elements = d.evaluate(pattern, d, null, 0, null);
+                    while ((i = elements.iterateNext())) {
+                        results.push(i);
+                    }
+                } else {
+                    elements = d.getElementsByTagName("*");
+                    pattern = new RegExp("(^|\\s)" + search + "(\\s|$)");
+                    for (var j = 0, l = elements.length; j < l; j++) {
+                        if ( pattern.test(elements[j].className) ) {
+                            results.push(elements[j]);
+                        }
+                    }
+                }
+                return results;
+            };
+        }
+	}
+    
+    function hasClass(el, className) {
+        return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className);
+	}
 
-	/**
-	* Extend the jQuery with the method adcStatementList
-	* Should be call on the container of the statement list
-	* 
-	*     // Single closed question
-	*     $('#adc_1').adcStatementList({
-	*         iterations : [
-	*           { id : 'U1', caption : "Iteration 1" },
-	*           { id : 'U3', caption : "Iteration 2" },
-	*           { id : 'U5', caption : "Iteration 3" }
-	*         ]
-	*     });
-	*
-	*     // Multi-coded question
-	*     $('#adc_1').adcStatementList({
-	*         isMultiple : true,
-	*         iterations : [
-	*           { id : 'L1', caption : "Iteration 1" },
-	*           { id : 'L3', caption : "Iteration 2" },
-	*           { id : 'L5', caption : "Iteration 3" }
-	*         ]
-	*     });
-	*
-	* @param {Object} options Statements list parameters
-	* @param {Array}  options.iterations Array which contains the definition of iterations
-	* @param {String} options.iterations[].id Id or name of the input which contains the value of the current iteration
-	* @param {String} options.iterations[].caption Caption of the current iteration
-	* @param {Boolean} [options.isMultiple] Indicates if the question is multiple
-	* @return {jQuery} Returns the current instance of the root container for the call chains
-	*/
-	$.fn.adcStarratingList = function adcStarratingList(options) {
-		// Verify if the options are correct
-		// Require key:iterations (array)
-		if (!options || !options.iterations || !options.iterations.length) {
-			throw new Error('adcStatementList expect an option argument with an array of iterations');
-		}
+	function addClass(el, className) {
+        if (el.classList) el.classList.add(className);
+        else if (!hasClass(el, className)) el.className += ' ' + className;
+	}
+
+	function removeClass(el, className) {
+        if (el.classList) el.classList.remove(className);
+        else el.className = el.className.replace(new RegExp('\\b'+ className+'\\b', 'g'), '');
+	}
+    
+    function tbBorder(el) {
+		var margin = el.offsetHeight - el.clientHeight;
+		return margin;
+	}
 		
-		(options.autoForward = Boolean(options.autoForward) || false);
-        (options.use = options.use || "star");
-        (options.autoForwardLastIteration = Boolean(options.autoForwardLastIteration) || false);
-		(options.scrollToTop = Boolean(options.scrollToTop) || false);
-		(options.showCounter = Boolean(options.showCounter) || false);
-        (options.currentQuestion = options.currentQuestion || '');
-				
-		// Delegate .transition() calls to .animate() if the browser can't do CSS transitions.
-		if (!$.support.transition) $.fn.transition = $.fn.animate;
-				
-		$(this).css({'max-width':options.maxWidth,'width':options.controlWidth});
-		$(this).parents('.controlContainer').css({'width':'100%'});
+	function lrBorder(el) {
+		var margin = el.offsetWidth - el.clientWidth;
+		return margin;
+	}
 		
-		if ( options.controlAlign === "center" ) {
-			$(this).parents('.controlContainer').css({'text-align':'center'});
-			$(this).css({'margin':'0px auto'});
-		} else if ( options.controlAlign === "right" ) {
-			$(this).css({'margin':'0 0 0 auto'});
-		}
+	function outerHeight(el) {
+		var height = el.offsetHeight;
+		var style = el.currentStyle || getComputedStyle(el);
+
+		height += parseInt(style.marginTop) + parseInt(style.marginBottom);
+		return height;
+	}
 		
-		// IE8 and below fix
-		if (!Array.prototype.indexOf) {
+	function outerWidth(el) {
+		var width = el.offsetWidth;
+		var style = el.currentStyle || getComputedStyle(el);
+
+        width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+		return width;
+	}
+    
+    function addEvent(el, type, handler) {
+		if (el.attachEvent) el.attachEvent('on'+type, handler); else el.addEventListener(type, handler);
+    }
+    
+    function removeEvent(el, type, handler) {
+		if (el.detachEvent) el.detachEvent('on'+type, handler); else el.removeEventListener(type, handler);
+    }
+    
+    // IE8 and below fix
+    if (!Array.prototype.indexOf) {
 			
-		  Array.prototype.indexOf = function(elt /*, from*/) {
-			var len = this.length >>> 0;
+    	Array.prototype.indexOf = function(elt /*, from*/) {
+    		var len = this.length >>> 0;
 		
 			var from = Number(arguments[1]) || 0;
 			from = (from < 0)
@@ -76,166 +94,273 @@
 				return from;
 			}
 			return -1;
-		  };
+    	};
+    }
+	
+	function StarRatingList(options) {
+        
+        // Verify if the options are correct
+		// Require key:iterations (array)
+		if (!options || !options.iterations || !options.iterations.length) {
+			throw new Error('adcStatementList expect an option argument with an array of iterations');
 		}
-		
-		// Global variables
-		var $container = $(this),
-            useStar = options.use,
-			currentIteration = 0,
+        
+		this.instanceId = options.instanceId || 1;
+        var container = document.getElementById("adc_" + this.instanceId),
+            images = [].slice.call(container.getElementsByTagName("img")),
+        	total_images = container.getElementsByTagName("img").length;
+        
+        function loadImages( images, callback ) {
+            var count = 0;
+
+            function check( n ) {
+                if( n == total_images ) {
+                    callback();
+                }
+            }
+
+            for( i = 0; i < total_images; ++i ) {
+                var src = images[i].src;
+                var img = document.createElement( "img" );
+                img.src = src;
+
+                img.addEventListener( "load", function() {
+                    if( this.complete ) {
+                        count++;
+                        check( count );
+                    }
+                });
+            }
+
+        }
+
+        window.addEventListener( "load", function() {
+            if ( total_images > 0 ) {
+                loadImages( images, function() {
+                    init(options);
+                });
+            } else {
+                init(options);
+            }
+        });
+        
+    }
+    
+    function init(options) {
+        
+		this.instanceId = options.instanceId || 1;
+		this.options = options;
+        (options.use = options.use || "star");
+		(options.width = options.width || 400);
+		(options.height = options.height || "auto");
+		(options.animate = Boolean(options.animate));
+		(options.autoForward = Boolean(options.autoForward));
+        (options.currentQuestion = options.currentQuestion || '');
+        (options.autoForwardLastIteration = Boolean(options.autoForwardLastIteration) || false);
+		(options.scrollToTop = Boolean(options.scrollToTop) || false);
+		(options.showCounter = Boolean(options.showCounter) || false);
+        
+        polyfillGetElementsByClassName();
+        
+        var container = document.getElementById("adc_" + this.instanceId),
+            currentIteration = 0,
             iterations = options.iterations,
-			useAltColour = Boolean(options.useAltColour),
+			isInLoop = Boolean(options.isInLoop),
+            useStar = options.use,
+			showTooltips = Boolean(options.showTooltips),
+			rowVerticalAlignment = options.rowVerticalAlignment,
+			isSingle = Boolean(options.isSingle),
+			valuesArray = [],
+            instanceId = options.instanceId,
+			dkSingle = Boolean(options.dkSingle),
+            images = container.getElementsByTagName("img"),
+			inputs = [].slice.call(document.getElementsByTagName("input")),
+            captions =  [].slice.call(container.getElementsByClassName('caption')),
+            controlContainers = [].slice.call(container.getElementsByClassName('controlContainer')),
+            allStars = [].slice.call(container.querySelectorAll('.' + useStar)),
+            allDKs = [].slice.call(container.querySelectorAll('.dk')),
+            submitBtns = [],
+            nextBtn,
+            total_images = container.getElementsByTagName("img").length,
+			images_loaded = 0,
+        	animate = Boolean(options.animate),
+        	useAltColour = Boolean(options.useAltColour),
 			autoForward = options.autoForward,
 			scrollToTop = options.scrollToTop,
 			showCounter = options.showCounter,
-            initialWidth = $container.find('.statement').width(),
-			showTooltips = Boolean(options.showTooltips),
-			tooltipStyle = options.tooltipStyle,
-			tooltipCurvedCorners = options.tooltipCurvedCorners,
-			tooltipShadow = options.tooltipShadow,
-			rowVerticalAlignment = options.rowVerticalAlignment,
-			isSingle = Boolean(options.isSingle),
-			valuesArray = new Array(),
-			dkSingle = Boolean(options.dkSingle);
-					
-		// Check for DK	
-		var DKID = iterations[0].element.attr('id').replace(/[^0-9]/g, ''),
-			hasDK = ( $('input[name="M' + DKID + ' -1"]').size() > 0 ) ? true : false;
-		if ( hasDK ) $('input[name="M' + DKID + ' -1"]').hide().next('span').hide();
+            initialWidth = container.clientWidth,
+            autoForwardLastIteration = options.autoForwardLastIteration;
 		
+        if (!options || !options.iterations || !options.iterations.length) {
+			throw new Error('adcStatementList expect an option argument with an array of iterations');
+		}
+        
+        nextBtn = document.querySelector('input[value="Next"]');
+		
+        container.style.maxWidth = options.maxWidth;
+        container.style.width = options.controlWidth;
+        container.parentNode.style.width = '100%';
+        container.parentNode.style.overflow = 'hidden';
+		
+        if ( options.controlAlign === "center" ) {
+            container.parentNode.style.textAlign = 'center';
+            container.style.margin = '0px auto';
+		} else if ( options.controlAlign === "right" ) {
+            container.style.margin = '0 0 0 auto';
+		}
+        
+		// Check for missing images and resize
+        for ( i=0; i<images.length; i++) {
+            var size = {
+                width: images[i].width,
+                height: images[i].height
+            };
+
+            if (options.forceImageSize === "height" ) {
+                if ( size.height > parseInt(options.maxImageHeight,10) ) {
+                    var ratio = ( parseInt(options.maxImageHeight,10) / size.height);
+                    size.height *= ratio;
+                    size.width  *= ratio;
+                }
+            } else if (options.forceImageSize === "width" ) {
+                if ( size.width > parseInt(options.maxImageWidth,10) ) {
+                    var ratio = ( parseInt(options.maxImageWidth,10) / size.width);
+                    size.width  *= ratio;
+                    size.height *= ratio;
+                }
+            } else if (options.forceImageSize === "both" ) {
+                if ( parseInt(options.maxImageHeight,10) > 0 && size.height > parseInt(options.maxImageHeight,10) ) {
+                    var ratio = ( parseInt(options.maxImageHeight,10) / size.height);
+                    size.height *= ratio;
+                    size.width  *= ratio;
+                }
+
+                if ( parseInt(options.maxImageWidth,10) > 0 && size.width > parseInt(options.maxImageWidth,10) ) {
+                    var ratio = ( parseInt(options.maxImageWidth,10) / size.width);
+                    size.width  *= ratio;
+                    size.height *= ratio;
+                }
+
+            } 
+            images[i].width = size.width;
+            images[i].height = size.height;
+        }
+
+		// Check for DK	
+		var DKID = iterations[0].element.id.replace(/[^0-9]/g, ''),
+			hasDK = ( document.querySelectorAll('input[name="M' + DKID + ' -1"]').length > 0 ) ? true : false;
+		if ( hasDK ) {
+            document.querySelector('input[name="M' + DKID + ' -1"]').style.display = "none";
+            document.querySelector('img[id$="M' + DKID + '_-1"]').style.display = "none";
+            document.querySelector('span#cpt' + DKID + '_-1').style.display = "none";
+            // image ends with M1_-1   $
+            // caption cpt1_-1
+            // input same as before
+        }
+
 		if ( isSingle ) {
 			var allValuesArray = iterations[0].allValues.split(",");
 			for ( var i=0; i<allValuesArray.length; i++ ) {
 				valuesArray.push( parseInt( allValuesArray[i] ) );	
 			}
 		} else {
-			for ( var i=1; i<=iterations.length; i++ ) {
+			for ( i=1; i<=iterations.length; i++ ) {
 				valuesArray.push(i);	
 			}
-
-
-
-
-
 		}
 		
 		// Hide or show next buttons
-		if ( options.topButtons === 'hide both' ) $container.find('.nextStatement:first, .previousStatement:first').remove();
-		else if ( options.topButtons === 'show next' )  $container.find('.previousStatement:first').remove();
-		else if ( options.topButtons === 'show back' )  $container.find('.nextStatement:first').remove();
+        var el,
+            nextStatements = [].slice.call(container.getElementsByClassName( 'nextStatement' )),
+            prevStatements = [].slice.call(container.getElementsByClassName( 'previousStatement' )),
+            statementTexts = [].slice.call(container.getElementsByClassName( 'statement_text' ));
+        
+		if ( options.topButtons === 'hide both' && !(isMultiple && options.bottomButtons === 'hide both') ) {
+            el = nextStatements[0];
+			el.parentNode.removeChild( el );
+            el = prevStatements[0];
+			el.parentNode.removeChild( el );
+        }
+        else if ( options.topButtons === 'show next' && !(isMultiple && options.bottomButtons === 'hide both') ) 
+        {
+            el = prevStatements[0];
+			el.parentNode.removeChild( el );
+        }
+        else if ( options.topButtons === 'show back' )
+        {
+            el = nextStatements[0];
+			el.parentNode.removeChild( el );
+        }
+        nextStatements = [].slice.call(container.getElementsByClassName( 'nextStatement' ));
+        prevStatements = [].slice.call(container.getElementsByClassName( 'previousStatement' ));
+        
+        if ( options.bottomButtons === 'hide both' ) {
+            el = nextStatements[nextStatements.length - 1];
+			el.parentNode.removeChild( el );
+            el = prevStatements[prevStatements.length - 1];
+			el.parentNode.removeChild( el );
+        }
+		else if ( options.bottomButtons === 'show next' ) {
+            el = prevStatements[prevStatements.length - 1];
+			el.parentNode.removeChild( el );
+        }
+		else if ( options.bottomButtons === 'show back' ) {
+            el = nextStatements[nextStatements.length - 1];
+			el.parentNode.removeChild( el );
+        }
+        nextStatements = [].slice.call(container.getElementsByClassName( 'nextStatement' ));
+        prevStatements = [].slice.call(container.getElementsByClassName( 'previousStatement' ));
 		
-		if ( options.bottomButtons === 'hide both' )	  $container.find('.nextStatement:last, .previousStatement:last').remove();
-		else if ( options.bottomButtons === 'show next' ) $container.find('.previousStatement:last').remove();
-		else if ( options.bottomButtons === 'show back' ) $container.find('.nextStatement:last').remove();
-		
-		if ( autoForward ) $container.find('.nextStatement, .previousStatement').remove();
-		
-		// Convert RGB to hex
-		function trim(arg) {
-			return arg.replace(/^\s+|\s+$/g, "");
-		}
-		function isNumeric(arg) {
-			return !isNaN(parseFloat(arg)) && isFinite(arg);
-		}
-		function isRgb(arg) {
-			arg = trim(arg);
-			return isNumeric(arg) && arg >= 0 && arg <= 255;
-		}
-		function rgbToHex(arg) {
-			arg = parseInt(arg, 10).toString(16);
-			return arg.length === 1 ? '0' + arg : arg; 
-		}
-		function processRgb(arg) {
-			arg = arg.split(',');
-	
-			if ( (arg.length === 3 || arg.length === 4) && isRgb(arg[0]) && isRgb(arg[1]) && isRgb(arg[2]) ) {
-				if (arg.length === 4 && !isNumeric(arg[3])) { return null; }
-				return '#' + rgbToHex(arg[0]).toUpperCase() + rgbToHex(arg[1]).toUpperCase() + rgbToHex(arg[2]).toUpperCase();
-			}
-			else {
-				return null;
-			}
-		}
-		
-		$('.starContainer').width( $('.' + useStar).outerWidth(true) * $('.starContainer .' + useStar).size() );
-		
-		// Detect DK
-		var DKID = iterations[0].element.attr('id').replace(/[^0-9]/g, '');
-		if ( $('input[name="M' + DKID + ' -1"]').size() > 0 || dkSingle ) {
-			//$(this).find('dk').hide();
-		} else {
-			$(this).find('.dk').hide();
-		}
-		
-		// For multi-coded question
-		// Add the @valueToAdd in @currentValue (without duplicate)
-		// and return the new value
-		function addValue(currentValue, valueToAdd) {
-			if (currentValue == '') {
-				return valueToAdd;
-			}
+		if ( autoForward ) {
+            var navigation = container.querySelectorAll('.nextStatement, .previousStatement');
+            for ( i=0; i<navigation.length; i++ ) {
+                navigation[i].parentNode.removeChild( navigation[i] );
+            }
+        }
+		/*  ------- THIS FAR ---------- */
+		container.querySelector('.starContainer').width = outerWidth(container.querySelector('.' + useStar)) * document.querySelectorAll('#adc_' + instanceId + ' .starContainer .' + useStar).length;
 
-			var arr = String(currentValue).split(','), i, l, wasFound = false;
-
-			for (i = 0, l = arr.length; i < l; i += 1) {
-				if (arr[i] == valueToAdd) {
-					wasFound = true;
-					break;
-				}
-			}
-
-			if (!wasFound) {
-				currentValue += ',' + valueToAdd;
-			}
-			return currentValue;
-		}
-
-		// For multi-coded question
-		// Remove the @valueToRemove from the @currentValue
-		// and return the new value
-		function removeValue(currentValue, valueToRemove) {
-			if (currentValue === '') {
-				return currentValue;
-			}
-			var arr = String(currentValue).split(','),
-                        i, l,
-                        newArray = [];
-			for (i = 0, l = arr.length; i < l; i += 1) {
-				if (arr[i] != valueToRemove) {
-					newArray.push(arr[i]);
-				}
-			}
-			currentValue = newArray.join(',');
-			return currentValue;
-		}
-		
-						
-		// Select a statement for single
+        // Select a statement for single
 		// @this = target node
-		
-		function selectStarsSingle() {
+		function selectStarsSingle(target) {
 			
 			// hide error
-			$('.error, #error-summary').hide();
-			
+			if ( document.querySelector('.error') ){
+                document.querySelector('.error').style.display = "none";
+            	document.querySelector('#error-summary').style.display = "none";
+            }
+            
 			// disable clicking during animation
-			if ( autoForward ) $container.off('click', '.' + useStar);
-		
-			var $input = iterations[currentIteration].element,
-				$target = $(this),
-				value = $target.attr('data-value'),
+            if ( autoForward ) {
+             	for ( i=0; i<allStars.length; i++ ) {
+                    removeEvent(allStars[i], 'click');
+                }
+            }
+            
+            var starContainer = target.parentNode,
+                input = iterations[currentIteration].element,
+				value = target.getAttribute('data-value'),
 				starValue = value,
-				DKID = $input.attr('id').replace(/[^0-9]/g, '');
-
-			$container.find('.selected').removeClass('selected');
-			if ( hasDK || dkSingle ) {
-				$container.next('.dk').removeClass('selected');
-				$('input[name="M' + DKID + ' -1"]').prop('checked', false);
+				DKID = input.id.replace(/[^0-9]/g, ''),
+                selectedElements = [].slice.call(starContainer.getElementsByClassName('selected'));
+            
+            for ( i=0; i<selectedElements.length; i++) {
+                removeClass(selectedElements[i], 'selected');
+            }
+            
+            if ( hasDK || dkSingle ) {
+                removeClass( target.parentNode.parentNode.querySelector('.dk'), 'selected');
+                if ( document.querySelector('input[name="M' + DKID + ' -1"]') )
+					document.querySelector('input[name="M' + DKID + ' -1"]').checked = false;
 			}
-			if ( isSingle ) starValue = $.inArray(parseInt(value), valuesArray) + 1;
-			
-			$container.find('.' + useStar).slice(0,starValue).addClass('selected');
-			$input.val(value);
+            
+            if ( isSingle ) starValue = valuesArray.indexOf(parseInt(value)) + 1;
+
+			var starsToSelect = [].slice.call(starContainer.querySelectorAll('.' + useStar)).slice(0,starValue);
+            for ( i=0; i<starsToSelect.length; i++) {
+                addClass(starsToSelect[i], 'selected');
+            }                                 
+			input.value = value;
             if (window.askia 
                 && window.arrLiveRoutingShortcut 
                 && window.arrLiveRoutingShortcut.length > 0
@@ -243,24 +368,37 @@
                 askia.triggerAnswer();
             }
 
-			if ( iterations[currentIteration].element.val() != '' ) $container.find('.nextStatement').show();
-			
-			if ( ($container.find('.nextStatement').css('display') == 'none' || $container.find('.nextStatement').size() === 0) || 
-				 (($container.find('.nextStatement').css('display') != 'none' || $container.find('.nextStatement').size() > 0) && autoForward) ) nextIteration();
+            if ( iterations[currentIteration].element.value != '' && nextStatements.length > 0 ) nextStatements[0].style.display = "";
+            
+            if ( nextStatements.length > 0 ) {
+                if ( nextStatements[0].style.display != "none" && autoForward ) {
+                    nextIteration();
+                }
+            } else {
+                nextIteration();
+            }
 		}
 		
 
 		// Returns the width of the statement
 		// according if the iteration is the first or the last
 		function getStatementWidth() {
-			var width = initialWidth;
-			if (currentIteration > 0 && iterations.length > 0) {
-				width -= $container.find('.previousStatement.top').outerWidth(true);
+
+            var width = container.clientWidth,
+                previousStatementTopOWidth = container.querySelector('.previousStatement.top') ? outerWidth(container.querySelector('.previousStatement.top')) : 0,
+                previousStatementTopLRBorder = container.querySelector('.previousStatement.top') ? lrBorder(container.querySelector('.previousStatement.top')) : 0,
+                nextStatementTopOWidth = container.querySelector('.nextStatement.top') ? outerWidth(container.querySelector('.nextStatement.top')) : 0,
+                nextStatementTopLRBorder = container.querySelector('.nextStatement.top') ? lrBorder(container.querySelector('.nextStatement.top')) : 0,
+                btnWidth = previousStatementTopOWidth >nextStatementTopOWidth ?
+                	( previousStatementTopOWidth + previousStatementTopLRBorder ) :
+            		( nextStatementTopOWidth + nextStatementTopLRBorder );
+            if ( currentIteration > 0 && iterations.length > 0 && options.topButtons != 'hide both' ) {
+            	width -= btnWidth;
+            }
+			if (currentIteration < (iterations.length - 1) || options.topButtons != 'hide both') {
+				width -= btnWidth;
 			}
-			if (currentIteration < (iterations.length - 1) || !autoForward) {
-				width -= $container.find('.nextStatement.top').outerWidth(true);
-			}
-			return width;
+            return width;
 		}
 
 		// Update the navigation
@@ -268,56 +406,90 @@
 		// if the iteration is the first or last
 		function updateNavigation() {
 			if (currentIteration > 0 && iterations.length > 0) {
-				if ( !(autoForward) ) $container.find('.previousStatement').show(options.animationSpeed);
+				if (options.topButtons !== 'hide both' || options.bottomButtons !== 'hide both') {
+                    for ( i=0; i<prevStatements.length; i++ ) {
+                        prevStatements[i].style.display = "";
+                    }
+                }
 			} else {
-				$container.find('.previousStatement').css('display','none');
+				for ( i=0; i<prevStatements.length; i++ ) {
+                    prevStatements[i].style.display = "none";
+                }
 			}
 			if (currentIteration < (iterations.length - 1)) {
-				if ( !(autoForward) ) $container.find('.nextStatement').show(options.animationSpeed);
+				if (options.topButtons !== 'hide both' || options.bottomButtons !== 'hide both') {
+                    for ( i=0; i<nextStatements.length; i++ ) {
+                        nextStatements[i].style.visibility = "visible";
+                        nextStatements[i].style.display = "";
+                    }
+                }
 			} else {
-				$container.find('.nextStatement').css('display','none');
+                for ( i=0; i<nextStatements.length; i++ ) {
+                    nextStatements[i].style.display = "none";
+                }
 			}
 		}
 		
-		function selectStarsNumeric() {
+		function selectStarsNumeric(target) {
 			// hide error
-			$('.error, #error-summary').hide();
+			if ( document.querySelector('.error') ){
+                document.querySelector('.error').style.display = "none";
+            	document.querySelector('#error-summary').style.display = "none";
+            }
 			
 			// disable clicking during animation
-			if ( autoForward ) $container.off('click', '.' + useStar);
+			if ( autoForward ) {
+             	for ( i=0; i<allStars.length; i++ ) {
+                    removeEvent(allStars[i], 'click');
+                }
+            }
 		
-			var $input = iterations[currentIteration].element,
-				$target = $(this),
-				value = $target.attr('data-value'),
+			var starContainer = target.parentNode,
+            	input = iterations[currentIteration].element,
+				value = target.getAttribute('data-value'),
 				starValue = value,
-				DKID = $input.attr('id').replace(/[^0-9]/g, '');
-
-			$container.find('.selected').removeClass('selected');
-			if ( hasDK || dkSingle ) {
-				$container.next('.dk').removeClass('selected');
-				$('input[name="M' + DKID + ' -1"]').prop('checked', false);
+				DKID = input.id.replace(/[^0-9]/g, '');
+            
+            var selectedElements = [].slice.call(starContainer.getElementsByClassName('selected'));
+            for ( i=0; i<selectedElements.length; i++) {
+                removeClass(selectedElements[i], 'selected');
+            }
+            if ( hasDK || dkSingle || allDKs.length > 0 ) {
+                removeClass( target.parentNode.parentNode.querySelector('.dk'), 'selected');
+                if ( document.querySelector('input[name="M' + DKID + ' -1"]') )
+					document.querySelector('input[name="M' + DKID + ' -1"]').checked = false;
 			}
 			
-			$container.find('.' + useStar).slice(0,starValue).addClass('selected');
-			$input.val(value);
+			var starsToSelect = [].slice.call(starContainer.querySelectorAll('.' + useStar)).slice(0,starValue);
+            for ( i=0; i<starsToSelect.length; i++) {
+                addClass(starsToSelect[i], 'selected');
+            }                                 
+			input.value = value;
             if (window.askia 
                 && window.arrLiveRoutingShortcut 
                 && window.arrLiveRoutingShortcut.length > 0
                 && window.arrLiveRoutingShortcut.indexOf(options.currentQuestion) >= 0) {
                 askia.triggerAnswer();
             }
-
-			if ( iterations[currentIteration].element.val() != '' ) $container.find('.nextStatement').show();
-			
-			if ( ($container.find('.nextStatement').css('display') == 'none' || $container.find('.nextStatement').size() === 0) || 
-				 (($container.find('.nextStatement').css('display') != 'none' || $container.find('.nextStatement').size() > 0) && autoForward) ) nextIteration();
+            
+            if ( iterations[currentIteration].element.value != '' && nextStatements.length > 0 ) nextStatements[0].style.display = "";
+            
+            if ( nextStatements.length > 0 ) {
+                if ( nextStatements[0].style.display != "none" && autoForward ) {
+                    nextIteration();
+                }
+            } else {
+                nextIteration();
+            }
 		}
 
 		// Go to the previous loop iteration
 		function previousIteration() {
 			
-			$container.off('click', '.' + useStar);
-			// TURN OFF DK TOO??
+            for ( i=0; i<allStars.length; i++ ) {
+                removeEvent(allStars[i], 'click');
+            }
+            // TURN OFF DK TOO??
 			
 			if (currentIteration <= 0) {
 				return;
@@ -331,14 +503,27 @@
 					width: width
 				};
 			updateNavigation();
-			$container.find('.statement').css('width',width).animate(css, options.animationSpeed, onAnimationComplete);
+			container.querySelector('.statement').style.width =  width + "px";
+            
+			var leftPos = container.querySelector('.statement').style.left;
+			container.querySelector('.statement').style.left = -outerWidth(container) + "px";
+                    
+			setTimeout( function() {
+				container.querySelector('.statement').style.left = leftPos + "px";
+				container.querySelector('.statement').style.width = css.width + "px";
+				container.querySelector('.statement').style.opacity = 0;
+				container.querySelector('.statement').style.width = css.width + "px";
+				onAnimationComplete();
+			}, 500);
 			
 		}
 
 		// Go to the next loop iteration
 		function nextIteration() {
 			
-			$container.off('click', '.' + useStar);
+			for ( i=0; i<allStars.length; i++ ) {
+                removeEvent(allStars[i], 'click');
+            }
 			// TURN OFF DK TOO??
 			
 			currentIteration++;
@@ -350,23 +535,51 @@
 				};
 				
 			if (currentIteration > (iterations.length - 1)) {
-				if ( options.autoForward === true ) {
-					$container.find('.statement').animate(css, options.animationSpeed);
-                    if ( options.autoForwardLastIteration === true ) {
-                        $(':input[name=Next]:last').click();
+				if ( autoForward ) {
+                    
+                    container.querySelector('.statement').style.opacity = css.opacity;
+                    
+					var leftPos = container.querySelector('.statement').style.left;
+                    container.querySelector('.statement').style.left = -outerWidth(container) + "px";
+                     container.querySelector('.statement').style.width = css.width + "px";
+                    setTimeout (function() {
+                        container.querySelector('.statement').style.left = 0 + "px";
+                        nextBtn.click();
+                    }, 500);
+                    
+                    if ( autoForwardLastIteration ) {
+                        nextBtn.click();
                     }
 				} else {
 					currentIteration--;	
-					if ( $container.find('.nextStatement').css('display') != 'none' ) $container.find('.nextStatement').css('display','none');
+					for ( i=0; i<nextStatements.length; i++ ) {
+                        if ( nextStatements[i].style.display !== "none" ) {
+                        	nextStatements[i].style.display = "none";
+                        }
+                    }
 				}
 				return;
 			} else {
 				if ( scrollToTop ) {
-					$("html, body").animate({ scrollTop: 0 }, "fast");
+					scrollTo(document.body, 0, 600);
 				}
 			}
+            removeClass(container.querySelector('.statement'), 'animate');
 			updateNavigation();
-			$container.find('.statement').css('width',width).animate(css, options.animationSpeed, onAnimationComplete);
+            
+			container.querySelector('.statement').style.width =  width + "px";
+
+            container.querySelector('.statement').style.opacity = css.opacity;
+            container.querySelector('.statement').style.width = css.width + "px";
+            onAnimationComplete();
+            addClass(container.querySelector('.statement'), 'animate');
+            var leftPos = container.querySelector('.statement').style.left;
+            container.querySelector('.statement').style.left = -outerWidth(container) + "px";
+                    
+            setTimeout ( function() {
+            	container.querySelector('.statement').style.left = 0 + "px";
+            	//onAnimationComplete();
+            }, 500);
 		}
 
 		// After the previous/next animation
@@ -379,127 +592,208 @@
 						left: '+=' + width,
 						width: width
 					};
-			$container.find('.statement').animate(css, options.animationSpeed);
+			
+            container.querySelector('.statement').style.opacity = css.opacity;
+            container.querySelector('.statement').style.width = css.width + "px";
+            var leftPos = container.querySelector('.statement').style.left;
+                    container.querySelector('.statement').style.left = 0 + "px";
 		}
 		
 		// Display the right loop caption and the right responses
 		function displayIteration() {
-			$container
-				.on('click', '.' + useStar, isSingle ? selectStarsSingle : selectStarsNumeric);
+            for ( i=0; i<allStars.length; i++ ) {
+                allStars[i].onclick = function(e){
+                    (isSingle) ? selectStarsSingle(this) : selectStarsNumeric(this);
+                };
+            }
 			
 			if ( showCounter ) {
-				if ( options.countDirection === 'count down' ) $container.find('.counterNumber').html(iterations.length - currentIteration - 1);
-				else $container.find('.counterNumber').html(currentIteration + 1);	
+				if ( options.countDirection === 'count down' ) container.querySelector('.counterNumber').textContent = (iterations.length - currentIteration - 1);
+				else container.querySelector('.counterNumber').textContent = (currentIteration + 1);
 			}
 			
 			// Display the info of the current loop iteration
-			$container.find('.statement_text').hide();
-			$container.find('.statement_text[data-id="' + (currentIteration + 1) + '"]').show();
+			for ( i=0; i<statementTexts.length; i++ ) {
+                statementTexts[i].style.display = "none";
+                statementTexts[i].style.filter = "";
+            }
+			container.querySelector('.statement_text[data-id="' + (currentIteration + 1) + '"]').style.display = "";
 			
 			// add alt here
 			if ( useAltColour ) {
-				if ( (currentIteration % 2) == 0 ) $container.find('.statement').removeClass('altStatement').css('filter','');
-				else $container.find('.statement').css('filter','').addClass('altStatement');
+				if ( (currentIteration % 2) === 0 )
+                {
+                    removeClass(container.querySelector('.statement'), 'altStatement');
+                    addClass(container.querySelector('.statement'), 'evenStatement');
+                }
+				else
+                {
+                    removeClass(container.querySelector('.statement'), 'evenStatement');
+                    addClass(container.querySelector('.statement'), 'altStatement');
+                }
+			} else {
+				addClass(container.querySelector('.statement'), 'evenStatement');
 			}
-
-			$container.find('.' + useStar + ', .dk').removeClass('selected');
-			$container.find('.' + useStar + ', .dk').removeClass('hover');
 			
-			if(currentIteration < 0 || currentIteration >= iterations.length){
+            for ( i=0; i<allStars.length; i++ ) {
+                removeClass(allStars[i],'selected');
+                removeClass(allStars[i],'hover');
+            }
+            for ( i=0; i<allDKs.length; i++ ) {
+                removeClass(allDKs[i],'selected');
+                removeClass(allDKs[i],'hover');
+            }
+			
+			if (currentIteration < 0 || currentIteration >= iterations.length){
 				
 			} else {
-				if(iterations[currentIteration] != null){
-					var starValue = isSingle  ? $.inArray(parseInt(iterations[currentIteration].element.val()), valuesArray) + 1 : iterations[currentIteration].element.val();
-					if ( dkSingle && isSingle && $.inArray(parseInt(iterations[currentIteration].element.val()), valuesArray) === $container.find('.' + useStar).size() ) {
-						$container.find('.dk').addClass('selected');
+				if (iterations[currentIteration] != null){
+					var currentContainer = container.querySelector('.' + iterations[currentIteration].element.id),
+                        starValue = isSingle  ? valuesArray.indexOf(parseInt(iterations[currentIteration].element.value)) + 1 : iterations[currentIteration].element.value;
+					if ( dkSingle && isSingle && valuesArray.indexOf(iterations[currentIteration].element.value) === allStars.length ) {
+						addClass(container.querySelector('.dk'),'selected');
 					} else {
-						if ( starValue == '-1' ) $container.find('.dk').addClass('selected');
-						else $container.find('.' + useStar).slice(0,starValue).addClass('selected');
+						if ( starValue == '-1' ) addClass(container.querySelector('.dk'),'selected');
+						else {
+                            var stars = [].slice.call(container.querySelectorAll('.' + useStar)).slice(0,starValue);
+                            for ( j=0; j<stars.length; j++ ) {
+                                addClass(stars[j],'selected');
+                            }
+                        }
 					}
-					if ( iterations[currentIteration].element.val() == '' ) $container.find('.nextStatement').hide();
+					if ( iterations[currentIteration].element.value == '' && nextStatements.length ) {
+                     	for ( i=0; i<nextStatements.length; i++ ) {
+                         	nextStatements[i].style.display = "none";
+                        }
+                    }
 				}
 			}
 		}
 		
 		function hoverStars(target) {
-			var $starContainer = target.parents('.starContainer');
-			var starValue = $.inArray(parseInt(target.data('value')), valuesArray) + 1;
-			$starContainer.find('.' + useStar).slice(0,starValue).addClass('hover');
+			var starContainer = target.parentNode,
+				starValue = valuesArray.indexOf(parseInt(target.getAttribute('data-value'))) + 1,
+            	stars =[].slice.call( starContainer.querySelectorAll('.' + useStar)).slice(0,starValue);
+            for ( i=0; i<stars.length; i++ ) {
+                addClass(stars[i],'hover');
+            }
+            
+            if ( showTooltips ) {
+    			tippy('#' + target.id);
+            }
 		}
 		
 		function unHoverStars(target) {
-			var $starContainer = target.parents('.starContainer');
-			$starContainer.find('.' + useStar).removeClass('hover');
+			var starContainer = target.parentNode,
+                 stars = starContainer.querySelectorAll('.' + useStar);
+            for ( i=0; i<stars.length; i++ ) {
+                removeClass(stars[i],'hover');
+            }
 		}
 		
-		function selectDK() {
+		function selectDK(target) {
+
+            var starContainer = target.parentNode,
+				input = iterations[currentIteration].element,
+				value = parseInt(target.getAttribute('data-value')),
+				DKID = input.id.replace(/[^0-9]/g, ''),
+                stars = starContainer.querySelectorAll('.' + useStar + '.selected'),
+                nextStatements = [].slice.call(container.getElementsByClassName( 'nextStatement' ));
 			
-			var $container = $(this).parents('.controlContainer'),
-				$input = iterations[currentIteration].element,
-				$target = $(this),
-				value = $(this).data('value'),
-				DKID = $input.attr('id').replace(/[^0-9]/g, '');
-				
 			// unselect all stars
-			$container.find('.' + useStar + '.selected').removeClass('selected');
-			if ( $(this).hasClass('selected') ) {
-				$(this).removeClass('selected');
-				$input.val('');
-				$('input[name="M' + DKID + ' -1"]').prop('checked', false);
+            for ( i=0; i<stars.length; i++ ) {
+                removeClass(stars[i],'selected');
+            }
+            if ( hasClass(target, 'selected') ) {
+				removeClass(target, 'selected');
+				input.value = '';
+                if ( document.querySelector('input[name="M' + DKID + ' -1"]') )
+                	document.querySelector('input[name="M' + DKID + ' -1"]').checked = false;
 			} else {
-				$(this).addClass('selected');
-				$input.val(value);
-				$('input[name="M' + DKID + ' -1"]').prop('checked', true);
+                addClass(target, 'selected');
+                input.value = value;
+                if ( document.querySelector('input[name="M' + DKID + ' -1"]') )
+                    document.querySelector('input[name="M' + DKID + ' -1"]').checked = true;
 			}
-            if (window.askia 
+          
+             if (window.askia 
                 && window.arrLiveRoutingShortcut 
                 && window.arrLiveRoutingShortcut.length > 0
                 && window.arrLiveRoutingShortcut.indexOf(options.currentQuestion) >= 0) {
                 askia.triggerAnswer();
             }
-			
-			if ( iterations[currentIteration].element.val() != '' ) $container.find('.nextStatement').show();
-			
-			if ( ($container.find('.nextStatement').css('display') == 'none' || $container.find('.nextStatement').size() === 0) || 
-				 (($container.find('.nextStatement').css('display') != 'none' || $container.find('.nextStatement').size() > 0) && autoForward) ) nextIteration();
-			
-			// if auto forward and all answered
-			/*if ( options.autoForward ) {
-				var totalAnswers = 0;
-				$container = $(this).parents('.adc-starRating');
-				$container.find('input').each(function forEachItem() {
-					if ( $(this).val() > 0 ) {
-						totalAnswers++;
-					}
-				});
-				if ( totalAnswers === iterations.length ) $(':input[name=Next]:last').click();
-			}*/
-			
+
+			if ( iterations[currentIteration].element.value != '' && nextStatements.length > 0 ) nextStatements[0].style.display = "";
+            
+            if ( nextStatements.length > 0 ) {
+                if ( nextStatements[0].style.display != "none" && autoForward ) {
+                    nextIteration();
+                }
+            } else {
+                nextIteration();
+            }
+            
 		}
-		$container
-			.on('click', '.previousStatement', previousIteration)
-			.on('click', '.nextStatement', nextIteration);
+        
+        for ( i=0; i<nextStatements.length; i++ ) {
+           	nextStatements[i].onclick = function(e) {
+                nextIteration();
+            };
+        }
+        for ( i=0; i<prevStatements.length; i++ ) {
+            prevStatements[i].onclick = function(e) {
+                previousIteration();
+            };
+        }
 
 		// Refresh the current status on load 
 		
 		displayIteration();
 		
 		if ( !autoForward ) {	
-			if ( currentIteration === 0 ) $container.find('.previousStatement').css('display','none');
-			$container.find('.nextStatement').css({'display':'block','margin-left':'10px','float':'right'});
-			$container.find('.statement').width($container.find('.statement').width() - $container.find('.nextStatement.top').outerWidth(true)).css('float','left');
-			$container.find('.nextStatement').height($container.find('.statement').height());
+			if ( currentIteration === 0 ) {
+                for ( i=0; i<prevStatements.length; i++ ) {
+                    prevStatements[i].style.display = "none";
+                }
+            }
+            for ( i=0; i<nextStatements.length; i++ ) {
+                nextStatements[i].style.display = "";
+                nextStatements[i].style.marginLeft = "10px";
+                nextStatements[i].style.float = "right";
+            }
+
+            var nextStatementWidth = ( container.querySelector('.nextStatement.top') ? outerWidth(container.querySelector('.nextStatement.top')) : 0);
+            container.querySelector('.statement').style.width = 
+				container.clientWidth - ( nextStatementWidth + lrBorder(document.querySelector('.statement'))) + "px";
+			container.querySelector('.statement').style.float = "left";
+            
+            for ( i = 0; i < nextStatements.length; i++ ) {
+				nextStatements[i].style.height = container.querySelector('.statement').clientHeight + "px";
+			}
+            for ( i = 0; i < prevStatements.length; i++ ) {
+				prevStatements[i].style.display = "block";
+                prevStatements[i].style.marginRight = "10px";
+                prevStatements[i].style.float = "left";
+                prevStatements[i].style.height = container.querySelector('.statement').clientHeight + "px";
+                prevStatements[i].style.display = "none";
+			}
 			
-			$container.find('.previousStatement').css({'display':'block','margin-right':'10px','float':'left'});
-			$container.find('.previousStatement').height($container.find('.statement').height()).hide();
-			if ( iterations[currentIteration].element.val() == '' && isSingle) $container.find('.nextStatement').hide();
+			if ( iterations[currentIteration].element.value == '' && isSingle) {
+             	for ( i = 0; i < nextStatements.length; i++ ) {
+                    nextStatements[i].style.display = "none";
+                }   
+            }
 			else if ( !isSingle ) {
-				if ( iterations[currentIteration].element.val() == '' ) $container.find('.nextStatement').hide();
+				if ( iterations[currentIteration].element.value == '' ) {
+                    for ( i = 0; i < nextStatements.length; i++ ) {
+                        nextStatements[i].style.display = "none";
+                    }   
+                }
 			}
 		}
 		
 		for ( var i=0; i<iterations.length; i++ ) {
-			if ( (isSingle && iterations[i].element.val() == '') || (!isSingle && iterations[currentIteration].element.val() == '')) {
+			if ( (isSingle && iterations[i].element.value == '') || (!isSingle && iterations[currentIteration].element.value == '')) {
 				if ( i!=0 ) {
 					currentIteration--;
 					nextIteration();
@@ -509,38 +803,60 @@
 				if ( i == iterations.length - 1 ) {
 					currentIteration--;
 					nextIteration();
+                    break;
 				} else {
 					currentIteration++;
 				}
 			}
 		}
-		
-		$container.on('mouseover mouseout', '.' + useStar,  function(e) {
-			
-			if (e.type == 'mouseover') {
-				hoverStars($(this))
-				var topAdj = $(this).find('span').outerHeight() + 5,
-					leftAdj = ($(this).find('span').outerWidth() - $(this).outerWidth())/2;
-				$(this).find('.classic').css({'top':-topAdj+'px', 'left':-leftAdj+'px'});
-			} else {
-				unHoverStars($(this))
-			}
-		});
-		$container.on('click', '.dk', selectDK);
-		
-		if ( options.animate ) {
-			var delay = 0,
-				easing = (!$.support.transition)?'swing':'snap';
-			
-			var $starContainer = $('.starContainer');
-			$starContainer.find('.' + useStar).each(function forEachItem() {
-				$(this).css({ x: 2000, opacity: 0 }).transition({ x: 0, opacity: 1, delay: delay }, options.animationSpeed, easing);
-				delay += 30;
-			});
+        
+        for ( var j=0; j<allStars.length; j++ ) {
+            allStars[j].onmouseover = function(e) {
+                hoverStars(this);
+                if (this.querySelector('span')) {
+                    var topAdj = outerHeight(this.querySelector('span')) + 5,
+                        leftAdj = (outerWidth(this.querySelector('span')) - outerWidth(this))/2;
+                    this.querySelector('.classic').style.top = -topAdj+'px';
+                    this.querySelector('.classic').style.left = -leftAdj+'px';
+                }
+            };
+            allStars[j].onmouseout = function(e) {
+                unHoverStars(this);
+            };
+        }
+		if ( container.querySelectorAll( '.dk' ).length > 0 ) {
+            for ( i=0; i<container.querySelectorAll( '.dk' ).length; i++ )
+			container.querySelectorAll( '.dk' )[i].onclick = function(e) {
+				selectDK(this);
+			};
 		}
+        
+        // animate
+        if ( animate ){
+			for ( i=0; i<allStars.length; i++ ) {
+                allStars[i].style.left = "2000px";
+                addClass(allStars[i], 'animate');
+            }
+        }
+        
+        function revealEl(el, delay) {
+            setTimeout(function(){
+                el.style.left = "0px";
+            }, delay);
+            setTimeout(function(){
+                removeClass(el,'animate');
+            }, 500);
+        }
+        
+      	// reveal control      
+        container.style.visibility = "visible";
+        if ( animate ){
+			for ( i=0; i<allStars.length; i++ ) {
+                revealEl( allStars[i], 100+ (i*50) );
+            }
+         }
 
-		// Returns the container
-		return this;
 	};
-
-} (jQuery));
+    
+	window.StarRatingList = StarRatingList;
+}());
