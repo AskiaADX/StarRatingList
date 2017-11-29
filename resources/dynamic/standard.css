@@ -272,15 +272,11 @@ EndIF
 }
 
 /*---------------- TOOLTIPS ----------------*/
-
-#adc_{%= CurrentADC.InstanceId%} .classic { 
+.tippy-tooltip { 
 	text-decoration:none;
 	padding: 8px 10px;
 	
-	background-color: rgb({%= tooltipColourPrimary%});
-	
 	font-size: {%= tooltipFontSize%};
-	color: rgb({%= tooltipFontColour%});
 	line-height: 1.2;
 	
 	{% IF tooltipBorderThickness <> "none" Then %}
@@ -292,4 +288,12 @@ EndIF
 	-moz-border-radius:		{%= tooltipCurvedCorners%}; 
 	-khtml-border-radius:	{%= tooltipCurvedCorners%}; 
 	border-radius:			{%= tooltipCurvedCorners%};
+}
+
+.tippy-tooltip [x-circle] { 
+	background-color: rgb({%= tooltipColourPrimary%});
+}
+
+.tippy-tooltip .tippy-tooltip-content { 
+	color: rgb({%= tooltipFontColour%}) !important;
 }
