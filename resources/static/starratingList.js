@@ -258,15 +258,9 @@
             // input same as before
         }
 
-		if ( isSingle ) {
-			var allValuesArray = iterations[0].allValues.split(",");
-			for ( var i=0; i<allValuesArray.length; i++ ) {
-				valuesArray.push( parseInt( allValuesArray[i] ) );	
-			}
-		} else {
-			for ( i=1; i<=iterations.length; i++ ) {
-				valuesArray.push(i);	
-			}
+		var allValuesArray = iterations[0].allValues.split(",");
+		for ( var i=0; i<allValuesArray.length; i++ ) {
+			valuesArray.push( parseInt( allValuesArray[i] ) );	
 		}
 		
 		// Hide or show next buttons

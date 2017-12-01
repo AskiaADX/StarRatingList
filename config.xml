@@ -7,7 +7,7 @@
   <info>
     <name>StarRatingList</name>
     <guid>995b8259-2cec-4368-b733-d7ea6eec68a9</guid>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
     <date>2014-07-03</date>
     <description><![CDATA[v1.0.1 - Fixed error thrown in IE8 because of old & unused code
 		v1.0.2 - Fixed empty element in itteration loop when numeric question (see github change)
@@ -19,7 +19,8 @@
 		v1.0.7 - JD - Fixed dk hover when selected
 		v1.0.8 - JD - Fixed element name
 		v2.0.0 - JD - Theme implementation
-		v2.0.3 - JD - Fixed tooptip styling]]></description>
+		v2.0.3 - JD - Fixed tooltip styling
+		v2.0.4 - JD - Fixed tooltip for numeric]]></description>
     <company>Askia</company>
     <author><![CDATA[Paul Ferreira <paulf@askia.com>        Jerome Duparc <jeromed@askia.com>]]></author>
     <site>http://www.askia.com</site>
