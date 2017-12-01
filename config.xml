@@ -20,7 +20,7 @@
 		v1.0.8 - JD - Fixed element name
 		v2.0.0 - JD - Theme implementation
 		v2.0.3 - JD - Fixed tooltip styling
-		v2.0.4 - JD - Fixed tooltip for numeric]]></description>
+		v2.0.4 - JD - Fixed tooltip for numeric and hover with autoforward]]></description>
     <company>Askia</company>
     <author><![CDATA[Paul Ferreira <paulf@askia.com>        Jerome Duparc <jeromed@askia.com>]]></author>
     <site>http://www.askia.com</site>
