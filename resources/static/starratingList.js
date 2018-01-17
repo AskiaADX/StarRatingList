@@ -269,13 +269,13 @@
             prevStatements = [].slice.call(container.getElementsByClassName( 'previousStatement' )),
             statementTexts = [].slice.call(container.getElementsByClassName( 'statement_text' ));
         
-		if ( options.topButtons === 'hide both' && !(isMultiple && options.bottomButtons === 'hide both') ) {
+		if ( options.topButtons === 'hide both' && !(options.bottomButtons === 'hide both') ) {
             el = nextStatements[0];
 			el.parentNode.removeChild( el );
             el = prevStatements[0];
 			el.parentNode.removeChild( el );
         }
-        else if ( options.topButtons === 'show next' && !(isMultiple && options.bottomButtons === 'hide both') ) 
+        else if ( options.topButtons === 'show next' && !(options.bottomButtons === 'hide both') ) 
         {
             el = prevStatements[0];
 			el.parentNode.removeChild( el );
