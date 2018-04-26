@@ -6,6 +6,9 @@
 	-ms-user-select:none; 
 	user-select:none;
 }
+.adc-starratingList * {
+    box-sizing: border-box;
+}
 /* Statements */
 .adc-starratingList .statement, 
 .adc-starratingList .previousStatement,

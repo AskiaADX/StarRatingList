@@ -366,10 +366,10 @@
             
             if ( nextStatements.length > 0 ) {
                 if ( nextStatements[0].style.display != "none" && autoForward ) {
-                    nextIteration();
+                    setTimeout(function() {nextIteration();}, 100);
                 }
             } else {
-                nextIteration();
+                setTimeout(function() {nextIteration();}, 100);
             }
 		}
 		
@@ -470,10 +470,10 @@
             
             if ( nextStatements.length > 0 ) {
                 if ( nextStatements[0].style.display != "none" && autoForward ) {
-                    nextIteration();
+                    setTimeout(function() {nextIteration();}, 100);
                 }
             } else {
-                nextIteration();
+                setTimeout(function() {nextIteration();}, 100);
             }
 		}
 
@@ -721,10 +721,10 @@
             
             if ( nextStatements.length > 0 ) {
                 if ( nextStatements[0].style.display != "none" && autoForward ) {
-                    nextIteration();
+                    setTimeout(function() {nextIteration();}, 100);
                 }
             } else {
-                nextIteration();
+                setTimeout(function() {nextIteration();}, 100);
             }
             
 		}
@@ -803,20 +803,22 @@
 				}
 			}
 		}
-        
-        for ( var j=0; j<allStars.length; j++ ) {
-            allStars[j].onmouseover = function(e) {
-                hoverStars(this);
-                if (this.querySelector('span')) {
-                    var topAdj = outerHeight(this.querySelector('span')) + 5,
-                        leftAdj = (outerWidth(this.querySelector('span')) - outerWidth(this))/2;
-                    this.querySelector('.classic').style.top = -topAdj+'px';
-                    this.querySelector('.classic').style.left = -leftAdj+'px';
-                }
-            };
-            allStars[j].onmouseout = function(e) {
-                unHoverStars(this);
-            };
+        var supportsTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
+        if (typeof supportsTouch === "undefined") {
+            for ( var j=0; j<allStars.length; j++ ) {
+                allStars[j].onmouseover = function(e) {
+                    hoverStars(this);
+                    if (this.querySelector('span')) {
+                        var topAdj = outerHeight(this.querySelector('span')) + 5,
+                            leftAdj = (outerWidth(this.querySelector('span')) - outerWidth(this))/2;
+                        this.querySelector('.classic').style.top = -topAdj+'px';
+                        this.querySelector('.classic').style.left = -leftAdj+'px';
+                    }
+                };
+                allStars[j].onmouseout = function(e) {
+                    unHoverStars(this);
+                };
+            }
         }
 		if ( container.querySelectorAll( '.dk' ).length > 0 ) {
             for ( i=0; i<container.querySelectorAll( '.dk' ).length; i++ )
