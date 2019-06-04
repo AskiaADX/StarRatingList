@@ -7,7 +7,7 @@
   <info>
     <name>StarRatingList</name>
     <guid>995b8259-2cec-4368-b733-d7ea6eec68a9</guid>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <date>2014-07-03</date>
     <description><![CDATA[v1.0.1 - Fixed error thrown in IE8 because of old & unused code
 		v1.0.2 - Fixed empty element in itteration loop when numeric question (see github change)
@@ -32,13 +32,13 @@
       <category>General</category>
     </categories>
     <constraints>
-      <constraint on="questions" single="true" numeric="true" requireParentLoop="true" chapter="false" date="false" multiple="false" open="false" requireLoopDepth="1" />
-      <constraint on="controls" textbox="true" responseblock="true" checkbox="false" label="false" listbox="false" radiobutton="false" />
+      <constraint on="questions" single="true" numeric="true" requireParentLoop="true" chapter="false" date="false" multiple="false" open="true" requireLoopDepth="true" />
+      <constraint on="controls" textbox="true" responseblock="true" checkbox="false" label="false" listbox="false" radiobutton="true" />
       <constraint on="responses" max="*" min="*" />
     </constraints>
   </info>
   <outputs defaultOutput="fallback">
-    <output id="standard" manageLoopDepth="1">
+    <output id="standard">
       <description><![CDATA[Output when the browser support Javascript]]></description>
       <condition><![CDATA[Browser.Support("javascript")]]></condition>
       <content fileName="starratingList.css" type="css" mode="static" position="head" />
@@ -70,7 +70,7 @@
       <content fileName="thumb.png" type="image" mode="static" position="none" />
       <content fileName="tick.png" type="image" mode="static" position="none" />
     </output>
-    <output id="fallback" manageLoopDepth="1">
+    <output id="fallback">
       <description><![CDATA[Fallback when the browser doesn&acute;t support Javascript]]></description>
       <condition><![CDATA[Not(Browser.Support("javascript"))]]></condition>
       <content fileName="default.css" type="css" mode="static" position="head" />
