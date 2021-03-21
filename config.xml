@@ -6,8 +6,8 @@
           askiaCompat="5.5.2">
   <info>
     <name>StarRatingList</name>
-    <guid>995b8259-2cec-4368-b733-d7ea6eec68a9</guid>
-    <version>3.0.2</version>
+    <guid>feb6e918-2ef6-413f-985f-1fc7642d0cf7</guid>
+    <version>3.0.3</version>
     <date>2014-07-03</date>
     <description><![CDATA[v1.0.1 - Fixed error thrown in IE8 because of old & unused code
 		v1.0.2 - Fixed empty element in itteration loop when numeric question (see github change)
@@ -23,7 +23,8 @@
 		v2.0.4 - JD - Fixed tooltip for numeric and hover with autoforward
 		v2.0.5 - JD - Fixed isMultiple
 		v2.0.6 - JD - Fixed hover problem on touch device
-		v3.0.0 - JD - AvailableAnswers]]></description>
+		v3.0.0 - JD - AvailableAnswers
+		v3.0.3 - JD - Changed GUID cause duplicate with StatementList]]></description>
     <company>Askia</company>
     <author><![CDATA[Paul Ferreira <paulf@askia.com>        Jerome Duparc <jeromed@askia.com>]]></author>
     <site>http://www.askia.com</site>
