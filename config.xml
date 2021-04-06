@@ -7,8 +7,8 @@
   <info>
     <name>StarRatingList</name>
     <guid>feb6e918-2ef6-413f-985f-1fc7642d0cf7</guid>
-    <version>3.0.3</version>
-    <date>2014-07-03</date>
+    <version>3.0.4</version>
+    <date>2021-04-06</date>
     <description><![CDATA[v1.0.1 - Fixed error thrown in IE8 because of old & unused code
 		v1.0.2 - Fixed empty element in itteration loop when numeric question (see github change)
 		v1.0.3 - Fixed a wrong loop iteration count
@@ -24,7 +24,8 @@
 		v2.0.5 - JD - Fixed isMultiple
 		v2.0.6 - JD - Fixed hover problem on touch device
 		v3.0.0 - JD - AvailableAnswers
-		v3.0.3 - JD - Changed GUID cause duplicate with StatementList]]></description>
+		v3.0.3 - JD - Changed GUID cause duplicate with StatementList
+    v3.0.4 - PG - Fixed animateResponses when set to no]]></description>
     <company>Askia</company>
     <author><![CDATA[Paul Ferreira <paulf@askia.com>        Jerome Duparc <jeromed@askia.com>]]></author>
     <site>http://www.askia.com</site>
@@ -48,11 +49,11 @@
       <content fileName="standard_numeric.html" type="html" mode="dynamic" position="none" />
       <content fileName="es5-shim.min.js" type="javascript" mode="share" position="head">
         <yield><![CDATA[
-          
+
           <!--[if lt IE 10]>
             <script type="text/javascript" src="{%= CurrentADC.URLTo("share/es5-shim.min.js") %}"></script>
           <![endif]-->
-          
+
         ]]></yield>
       </content>
       <content fileName="domready.js" type="javascript" mode="share" position="head" />
@@ -283,9 +284,9 @@
     <category id="alignment" name="Alignment">
       <property xsi:type="standardProperty" id="statementTextAlign" name="Statement Text Alignment" type="string" mode="static">
         <description><![CDATA[
-          
+
 	          Set alignment for text in the statement
-	        
+
         ]]></description>
         <value><![CDATA[left]]></value>
         <options>
@@ -296,9 +297,9 @@
       </property>
       <property xsi:type="standardProperty" id="responseTextAlign" name="Response Text Alignment" type="string" mode="static">
         <description><![CDATA[
-          
+
 	          The alignment of the text in the responses
-	        
+
         ]]></description>
         <value><![CDATA[left]]></value>
         <options>
@@ -309,9 +310,9 @@
       </property>
       <property xsi:type="standardProperty" id="responseAlign" name="Response Alignment" type="string" mode="static">
         <description><![CDATA[
-          
+
 	          Set alignment of responses
-	        
+
         ]]></description>
         <value><![CDATA[left]]></value>
         <options>
@@ -322,9 +323,9 @@
       </property>
       <property xsi:type="standardProperty" id="responseContentPosition" name="Response Content Position" type="string" mode="static">
         <description><![CDATA[
-          
+
 	          Set position for response content
-	        
+
         ]]></description>
         <value><![CDATA[left]]></value>
         <options>
@@ -335,9 +336,9 @@
       </property>
       <property xsi:type="standardProperty" id="responseImagePosition" name="Response Image Position" type="string" mode="static">
         <description><![CDATA[
-          
+
 	          Set position for images in responses in relation to text
-	        
+
         ]]></description>
         <value><![CDATA[right]]></value>
         <options>
@@ -478,25 +479,25 @@
     <category id="images" name="Images">
       <property xsi:type="standardProperty" id="maxImageWidth" name="Max Image Width" type="number" mode="static">
         <description><![CDATA[
-          
+
 	          Set max image width
-			
+
         ]]></description>
         <value><![CDATA[100px]]></value>
       </property>
       <property xsi:type="standardProperty" id="maxImageHeight" name="Max Image Height" type="number" mode="static">
         <description><![CDATA[
-          
+
 	          Set max image height
-			
+
         ]]></description>
         <value><![CDATA[100px]]></value>
       </property>
       <property xsi:type="standardProperty" id="forceImageSize" name="Force image size" type="string" mode="static">
         <description><![CDATA[
-          
+
 	          Force height or width for all images
-	        
+
         ]]></description>
         <value><![CDATA[width]]></value>
         <options>
@@ -682,9 +683,9 @@
     <category id="fallback" name="Fallback">
       <property xsi:type="standardProperty" id="orientation" name="Orientation" type="string" mode="static">
         <description><![CDATA[
-          
+
 	          Response block orientation
-	        
+
         ]]></description>
         <value><![CDATA[horizontal]]></value>
         <options>
@@ -694,9 +695,9 @@
       </property>
       <property xsi:type="standardProperty" id="fbImageWidth" name="Image Width" type="number" mode="static">
         <description><![CDATA[
-          
+
 	          Set image width for fallback
-			
+
         ]]></description>
         <value><![CDATA[100]]></value>
       </property>

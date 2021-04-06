@@ -1,5 +1,5 @@
 (function () {
-    
+
      // Polyfill: Add a getElementsByClassName function IE < 9
     function polyfillGetElementsByClassName() {
         if (!document.getElementsByClassName) {
@@ -27,7 +27,7 @@
             };
         }
 	}
-    
+
     function hasClass(el, className) {
         return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className);
 	}
@@ -41,17 +41,17 @@
         if (el.classList) el.classList.remove(className);
         else el.className = el.className.replace(new RegExp('\\b'+ className+'\\b', 'g'), '');
 	}
-    
+
     function tbBorder(el) {
 		var margin = el.offsetHeight - el.clientHeight;
 		return margin;
 	}
-		
+
 	function lrBorder(el) {
 		var margin = el.offsetWidth - el.clientWidth;
 		return margin;
 	}
-		
+
 	function outerHeight(el) {
 		var height = el.offsetHeight;
 		var style = el.currentStyle || getComputedStyle(el);
@@ -59,7 +59,7 @@
 		height += parseInt(style.marginTop) + parseInt(style.marginBottom);
 		return height;
 	}
-		
+
 	function outerWidth(el) {
 		var width = el.offsetWidth;
 		var style = el.currentStyle || getComputedStyle(el);
@@ -67,28 +67,28 @@
         width += parseInt(style.marginLeft) + parseInt(style.marginRight);
 		return width;
 	}
-    
+
     function addEvent(el, type, handler) {
 		if (el.attachEvent) el.attachEvent('on'+type, handler); else el.addEventListener(type, handler);
     }
-    
+
     function removeEvent(el, type, handler) {
 		if (el.detachEvent) el.detachEvent('on'+type, handler); else el.removeEventListener(type, handler);
     }
-    
+
     // IE8 and below fix
     if (!Array.prototype.indexOf) {
-			
+
     	Array.prototype.indexOf = function(elt /*, from*/) {
     		var len = this.length >>> 0;
-		
+
 			var from = Number(arguments[1]) || 0;
 			from = (from < 0)
 				 ? Math.ceil(from)
 				 : Math.floor(from);
 			if (from < 0)
 			  from += len;
-		
+
 			for (; from < len; from++) {
 			  if (from in this && this[from] === elt)
 				return from;
@@ -96,20 +96,20 @@
 			return -1;
     	};
     }
-	
+
 	function StarRatingList(options) {
-        
+
         // Verify if the options are correct
 		// Require key:iterations (array)
 		if (!options || !options.iterations || !options.iterations.length) {
 			throw new Error('adcStatementList expect an option argument with an array of iterations');
 		}
-        
+
 		this.instanceId = options.instanceId || 1;
         var container = document.getElementById("adc_" + this.instanceId),
             images = [].slice.call(container.getElementsByTagName("img")),
         	total_images = container.getElementsByTagName("img").length;
-        
+
         function loadImages( images, callback ) {
             var count = 0;
 
@@ -143,11 +143,11 @@
                 init(options);
             }
         });
-        
+
     }
-    
+
     function init(options) {
-        
+
 		this.instanceId = options.instanceId || 1;
 		this.options = options;
         (options.use = options.use || "star");
@@ -159,9 +159,9 @@
         (options.autoForwardLastIteration = Boolean(options.autoForwardLastIteration) || false);
 		(options.scrollToTop = Boolean(options.scrollToTop) || false);
 		(options.showCounter = Boolean(options.showCounter) || false);
-        
+
         polyfillGetElementsByClassName();
-        
+
         var container = document.getElementById("adc_" + this.instanceId),
             currentIteration = 0,
             iterations = options.iterations,
@@ -190,25 +190,25 @@
 			showCounter = options.showCounter,
             initialWidth = container.clientWidth,
             autoForwardLastIteration = options.autoForwardLastIteration;
-		
+
         if (!options || !options.iterations || !options.iterations.length) {
 			throw new Error('adcStatementList expect an option argument with an array of iterations');
 		}
-        
+
         nextBtn = document.querySelector('input[name="Next"]');
-		
+
         container.style.maxWidth = options.maxWidth;
         container.style.width = options.controlWidth;
         container.parentNode.style.width = '100%';
         container.parentNode.style.overflow = 'hidden';
-		
+
         if ( options.controlAlign === "center" ) {
             container.parentNode.style.textAlign = 'center';
             container.style.margin = '0px auto';
 		} else if ( options.controlAlign === "right" ) {
             container.style.margin = '0 0 0 auto';
 		}
-        
+
 		// Check for missing images and resize
         for ( i=0; i<images.length; i++) {
             var size = {
@@ -241,12 +241,12 @@
                     size.height *= ratio;
                 }
 
-            } 
+            }
             images[i].width = size.width;
             images[i].height = size.height;
         }
 
-		// Check for DK	
+		// Check for DK
 		var DKID = iterations[0].element.id.replace(/[^0-9]/g, ''),
 			hasDK = ( document.querySelectorAll('input[name="M' + DKID + ' -1"]').length > 0 ) ? true : false;
 		if ( hasDK ) {
@@ -260,22 +260,22 @@
 
 		var allValuesArray = iterations[0].allValues.split(",");
 		for ( var i=0; i<allValuesArray.length; i++ ) {
-			valuesArray.push( parseInt( allValuesArray[i] ) );	
+			valuesArray.push( parseInt( allValuesArray[i] ) );
 		}
-		
+
 		// Hide or show next buttons
         var el,
             nextStatements = [].slice.call(container.getElementsByClassName( 'nextStatement' )),
             prevStatements = [].slice.call(container.getElementsByClassName( 'previousStatement' )),
             statementTexts = [].slice.call(container.getElementsByClassName( 'statement_text' ));
-        
+
 		if ( options.topButtons === 'hide both' && !(options.bottomButtons === 'hide both') ) {
             el = nextStatements[0];
 			el.parentNode.removeChild( el );
             el = prevStatements[0];
 			el.parentNode.removeChild( el );
         }
-        else if ( options.topButtons === 'show next' && !(options.bottomButtons === 'hide both') ) 
+        else if ( options.topButtons === 'show next' && !(options.bottomButtons === 'hide both') )
         {
             el = prevStatements[0];
 			el.parentNode.removeChild( el );
@@ -287,7 +287,7 @@
         }
         nextStatements = [].slice.call(container.getElementsByClassName( 'nextStatement' ));
         prevStatements = [].slice.call(container.getElementsByClassName( 'previousStatement' ));
-        
+
         if ( options.bottomButtons === 'hide both' ) {
             el = nextStatements[nextStatements.length - 1];
 			el.parentNode.removeChild( el );
@@ -304,7 +304,7 @@
         }
         nextStatements = [].slice.call(container.getElementsByClassName( 'nextStatement' ));
         prevStatements = [].slice.call(container.getElementsByClassName( 'previousStatement' ));
-		
+
 		if ( autoForward ) {
             var navigation = container.querySelectorAll('.nextStatement, .previousStatement');
             for ( i=0; i<navigation.length; i++ ) {
@@ -317,53 +317,53 @@
         // Select a statement for single
 		// @this = target node
 		function selectStarsSingle(target) {
-			
+
 			// hide error
 			if ( document.querySelector('.error') ){
                 document.querySelector('.error').style.display = "none";
             	document.querySelector('#error-summary').style.display = "none";
             }
-            
+
 			// disable clicking during animation
             if ( autoForward ) {
              	for ( i=0; i<allStars.length; i++ ) {
                     removeEvent(allStars[i], 'click');
                 }
             }
-            
+
             var starContainer = target.parentNode,
                 input = iterations[currentIteration].element,
 				value = target.getAttribute('data-value'),
 				starValue = value,
 				DKID = input.id.replace(/[^0-9]/g, ''),
                 selectedElements = [].slice.call(starContainer.getElementsByClassName('selected'));
-            
+
             for ( i=0; i<selectedElements.length; i++) {
                 removeClass(selectedElements[i], 'selected');
             }
-            
+
             if ( hasDK || dkSingle ) {
                 removeClass( target.parentNode.parentNode.querySelector('.dk'), 'selected');
                 if ( document.querySelector('input[name="M' + DKID + ' -1"]') )
 					document.querySelector('input[name="M' + DKID + ' -1"]').checked = false;
 			}
-            
+
             if ( isSingle ) starValue = valuesArray.indexOf(parseInt(value)) + 1;
 
 			var starsToSelect = [].slice.call(starContainer.querySelectorAll('.' + useStar)).slice(0,starValue);
             for ( i=0; i<starsToSelect.length; i++) {
                 addClass(starsToSelect[i], 'selected');
-            }                                 
+            }
 			input.value = value;
-            if (window.askia 
-                && window.arrLiveRoutingShortcut 
+            if (window.askia
+                && window.arrLiveRoutingShortcut
                 && window.arrLiveRoutingShortcut.length > 0
                 && window.arrLiveRoutingShortcut.indexOf(options.currentQuestion) >= 0) {
                 askia.triggerAnswer();
             }
 
             if ( iterations[currentIteration].element.value != '' && nextStatements.length > 0 ) nextStatements[0].style.display = "";
-            
+
             if ( nextStatements.length > 0 ) {
                 if ( nextStatements[0].style.display != "none" && autoForward ) {
                     setTimeout(function() {nextIteration();}, 100);
@@ -372,7 +372,7 @@
                 setTimeout(function() {nextIteration();}, 100);
             }
 		}
-		
+
 
 		// Returns the width of the statement
 		// according if the iteration is the first or the last
@@ -396,7 +396,7 @@
 		}
 
 		// Update the navigation
-		// Hide or display the button 
+		// Hide or display the button
 		// if the iteration is the first or last
 		function updateNavigation() {
 			if (currentIteration > 0 && iterations.length > 0) {
@@ -423,27 +423,27 @@
                 }
 			}
 		}
-		
+
 		function selectStarsNumeric(target) {
 			// hide error
 			if ( document.querySelector('.error') ){
                 document.querySelector('.error').style.display = "none";
             	document.querySelector('#error-summary').style.display = "none";
             }
-			
+
 			// disable clicking during animation
 			if ( autoForward ) {
              	for ( i=0; i<allStars.length; i++ ) {
                     removeEvent(allStars[i], 'click');
                 }
             }
-		
+
 			var starContainer = target.parentNode,
             	input = iterations[currentIteration].element,
 				value = target.getAttribute('data-value'),
 				starValue = value,
 				DKID = input.id.replace(/[^0-9]/g, '');
-            
+
             var selectedElements = [].slice.call(starContainer.getElementsByClassName('selected'));
             for ( i=0; i<selectedElements.length; i++) {
                 removeClass(selectedElements[i], 'selected');
@@ -453,21 +453,21 @@
                 if ( document.querySelector('input[name="M' + DKID + ' -1"]') )
 					document.querySelector('input[name="M' + DKID + ' -1"]').checked = false;
 			}
-			
+
 			var starsToSelect = [].slice.call(starContainer.querySelectorAll('.' + useStar)).slice(0,starValue);
             for ( i=0; i<starsToSelect.length; i++) {
                 addClass(starsToSelect[i], 'selected');
-            }                                 
+            }
 			input.value = value;
-            if (window.askia 
-                && window.arrLiveRoutingShortcut 
+            if (window.askia
+                && window.arrLiveRoutingShortcut
                 && window.arrLiveRoutingShortcut.length > 0
                 && window.arrLiveRoutingShortcut.indexOf(options.currentQuestion) >= 0) {
                 askia.triggerAnswer();
             }
-            
+
             if ( iterations[currentIteration].element.value != '' && nextStatements.length > 0 ) nextStatements[0].style.display = "";
-            
+
             if ( nextStatements.length > 0 ) {
                 if ( nextStatements[0].style.display != "none" && autoForward ) {
                     setTimeout(function() {nextIteration();}, 100);
@@ -479,12 +479,12 @@
 
 		// Go to the previous loop iteration
 		function previousIteration() {
-			
+
             for ( i=0; i<allStars.length; i++ ) {
                 removeEvent(allStars[i], 'click');
             }
             // TURN OFF DK TOO??
-			
+
 			if (currentIteration <= 0) {
 				return;
 			}
@@ -498,10 +498,10 @@
 				};
 			updateNavigation();
 			container.querySelector('.statement').style.width =  width + "px";
-            
+
 			var leftPos = container.querySelector('.statement').style.left;
 			container.querySelector('.statement').style.left = -outerWidth(container) + "px";
-                    
+
 			setTimeout( function() {
 				container.querySelector('.statement').style.left = leftPos + "px";
 				container.querySelector('.statement').style.width = css.width + "px";
@@ -509,17 +509,17 @@
 				container.querySelector('.statement').style.width = css.width + "px";
 				onAnimationComplete();
 			}, 500);
-			
+
 		}
 
 		// Go to the next loop iteration
 		function nextIteration() {
-			
+
 			for ( i=0; i<allStars.length; i++ ) {
                 removeEvent(allStars[i], 'click');
             }
 			// TURN OFF DK TOO??
-			
+
 			currentIteration++;
 			var width = getStatementWidth(),
 				css = {
@@ -527,12 +527,12 @@
 					left: '-=' + width,
 					width: width
 				};
-				
+
 			if (currentIteration > (iterations.length - 1)) {
 				if ( autoForward ) {
-                    
+
                     container.querySelector('.statement').style.opacity = css.opacity;
-                    
+
 					var leftPos = container.querySelector('.statement').style.left;
                     container.querySelector('.statement').style.left = -outerWidth(container) + "px";
                      container.querySelector('.statement').style.width = css.width + "px";
@@ -540,12 +540,12 @@
                         container.querySelector('.statement').style.left = 0 + "px";
                         nextBtn.click();
                     }, 500);
-                    
+
                     if ( autoForwardLastIteration ) {
                         nextBtn.click();
                     }
 				} else {
-					currentIteration--;	
+					currentIteration--;
 					for ( i=0; i<nextStatements.length; i++ ) {
                         if ( nextStatements[i].style.display !== "none" ) {
                         	nextStatements[i].style.display = "none";
@@ -560,16 +560,17 @@
 			}
             removeClass(container.querySelector('.statement'), 'animate');
 			updateNavigation();
-            
+
 			container.querySelector('.statement').style.width =  width + "px";
 
             container.querySelector('.statement').style.opacity = css.opacity;
             container.querySelector('.statement').style.width = css.width + "px";
             onAnimationComplete();
-            addClass(container.querySelector('.statement'), 'animate');
+            if (animate)
+              addClass(container.querySelector('.statement'), 'animate');
             var leftPos = container.querySelector('.statement').style.left;
             container.querySelector('.statement').style.left = -outerWidth(container) + "px";
-                    
+
             setTimeout ( function() {
             	container.querySelector('.statement').style.left = 0 + "px";
             	//onAnimationComplete();
@@ -579,20 +580,20 @@
 		// After the previous/next animation
 		function onAnimationComplete() {
 			displayIteration();
-			
+
 			var width = getStatementWidth(),
 					css = {
 						opacity: 1,
 						left: '+=' + width,
 						width: width
 					};
-			
+
             container.querySelector('.statement').style.opacity = css.opacity;
             container.querySelector('.statement').style.width = css.width + "px";
             var leftPos = container.querySelector('.statement').style.left;
                     container.querySelector('.statement').style.left = 0 + "px";
 		}
-		
+
 		// Display the right loop caption and the right responses
 		function displayIteration() {
             for ( i=0; i<allStars.length; i++ ) {
@@ -600,19 +601,19 @@
                     (isSingle) ? selectStarsSingle(this) : selectStarsNumeric(this);
                 };
             }
-			
+
 			if ( showCounter ) {
 				if ( options.countDirection === 'count down' ) container.querySelector('.counterNumber').textContent = (iterations.length - currentIteration - 1);
 				else container.querySelector('.counterNumber').textContent = (currentIteration + 1);
 			}
-			
+
 			// Display the info of the current loop iteration
 			for ( i=0; i<statementTexts.length; i++ ) {
                 statementTexts[i].style.display = "none";
                 statementTexts[i].style.filter = "";
             }
 			container.querySelector('.statement_text[data-id="' + (currentIteration + 1) + '"]').style.display = "";
-			
+
 			// add alt here
 			if ( useAltColour ) {
 				if ( (currentIteration % 2) === 0 )
@@ -628,7 +629,7 @@
 			} else {
 				addClass(container.querySelector('.statement'), 'evenStatement');
 			}
-			
+
             for ( i=0; i<allStars.length; i++ ) {
                 removeClass(allStars[i],'selected');
                 removeClass(allStars[i],'hover');
@@ -637,9 +638,9 @@
                 removeClass(allDKs[i],'selected');
                 removeClass(allDKs[i],'hover');
             }
-			
+
 			if (currentIteration < 0 || currentIteration >= iterations.length){
-				
+
 			} else {
 				if (iterations[currentIteration] != null){
 					var currentContainer = container.querySelector('.' + iterations[currentIteration].element.id),
@@ -663,7 +664,7 @@
 				}
 			}
 		}
-		
+
 		function hoverStars(target) {
 			var starContainer = target.parentNode,
 				starValue = valuesArray.indexOf(parseInt(target.getAttribute('data-value'))) + 1,
@@ -671,12 +672,12 @@
             for ( i=0; i<stars.length; i++ ) {
                 addClass(stars[i],'hover');
             }
-            
+
             if ( showTooltips ) {
     			tippy('#' + target.id);
             }
 		}
-		
+
 		function unHoverStars(target) {
 			var starContainer = target.parentNode,
                  stars = starContainer.querySelectorAll('.' + useStar);
@@ -684,7 +685,7 @@
                 removeClass(stars[i],'hover');
             }
 		}
-		
+
 		function selectDK(target) {
 
             var starContainer = target.parentNode,
@@ -693,7 +694,7 @@
 				DKID = input.id.replace(/[^0-9]/g, ''),
                 stars = starContainer.querySelectorAll('.' + useStar + '.selected'),
                 nextStatements = [].slice.call(container.getElementsByClassName( 'nextStatement' ));
-			
+
 			// unselect all stars
             for ( i=0; i<stars.length; i++ ) {
                 removeClass(stars[i],'selected');
@@ -709,16 +710,16 @@
                 if ( document.querySelector('input[name="M' + DKID + ' -1"]') )
                     document.querySelector('input[name="M' + DKID + ' -1"]').checked = true;
 			}
-          
-             if (window.askia 
-                && window.arrLiveRoutingShortcut 
+
+             if (window.askia
+                && window.arrLiveRoutingShortcut
                 && window.arrLiveRoutingShortcut.length > 0
                 && window.arrLiveRoutingShortcut.indexOf(options.currentQuestion) >= 0) {
                 askia.triggerAnswer();
             }
 
 			if ( iterations[currentIteration].element.value != '' && nextStatements.length > 0 ) nextStatements[0].style.display = "";
-            
+
             if ( nextStatements.length > 0 ) {
                 if ( nextStatements[0].style.display != "none" && autoForward ) {
                     setTimeout(function() {nextIteration();}, 100);
@@ -726,9 +727,9 @@
             } else {
                 setTimeout(function() {nextIteration();}, 100);
             }
-            
+
 		}
-        
+
         for ( i=0; i<nextStatements.length; i++ ) {
            	nextStatements[i].onclick = function(e) {
                 nextIteration();
@@ -740,11 +741,11 @@
             };
         }
 
-		// Refresh the current status on load 
-		
+		// Refresh the current status on load
+
 		displayIteration();
-		
-		if ( !autoForward ) {	
+
+		if ( !autoForward ) {
 			if ( currentIteration === 0 ) {
                 for ( i=0; i<prevStatements.length; i++ ) {
                     prevStatements[i].style.display = "none";
@@ -757,10 +758,10 @@
             }
 
             var nextStatementWidth = ( container.querySelector('.nextStatement.top') ? outerWidth(container.querySelector('.nextStatement.top')) : 0);
-            container.querySelector('.statement').style.width = 
+            container.querySelector('.statement').style.width =
 				container.clientWidth - ( nextStatementWidth + lrBorder(document.querySelector('.statement'))) + "px";
 			container.querySelector('.statement').style.float = "left";
-            
+
             for ( i = 0; i < nextStatements.length; i++ ) {
 				nextStatements[i].style.height = container.querySelector('.statement').clientHeight + "px";
 			}
@@ -771,21 +772,21 @@
                 prevStatements[i].style.height = container.querySelector('.statement').clientHeight + "px";
                 prevStatements[i].style.display = "none";
 			}
-			
+
 			if ( iterations[currentIteration].element.value == '' && isSingle) {
              	for ( i = 0; i < nextStatements.length; i++ ) {
                     nextStatements[i].style.display = "none";
-                }   
+                }
             }
 			else if ( !isSingle ) {
 				if ( iterations[currentIteration].element.value == '' ) {
                     for ( i = 0; i < nextStatements.length; i++ ) {
                         nextStatements[i].style.display = "none";
-                    }   
+                    }
                 }
 			}
 		}
-		
+
 		for ( var i=0; i<iterations.length; i++ ) {
 			if ( (isSingle && iterations[i].element.value == '') || (!isSingle && iterations[currentIteration].element.value == '')) {
 				if ( i!=0 ) {
@@ -826,7 +827,7 @@
 				selectDK(this);
 			};
 		}
-        
+
         // animate
         if ( animate ){
 			for ( i=0; i<allStars.length; i++ ) {
@@ -834,7 +835,7 @@
                 addClass(allStars[i], 'animate');
             }
         }
-        
+
         function revealEl(el, delay) {
             setTimeout(function(){
                 el.style.left = "0px";
@@ -843,8 +844,8 @@
                 removeClass(el,'animate');
             }, 500);
         }
-        
-      	// reveal control      
+
+      	// reveal control
         container.style.visibility = "visible";
         if ( animate ){
 			for ( i=0; i<allStars.length; i++ ) {
@@ -853,6 +854,6 @@
          }
 
 	};
-    
+
 	window.StarRatingList = StarRatingList;
 }());
