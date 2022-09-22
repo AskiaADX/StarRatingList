@@ -7,8 +7,8 @@
   <info>
     <name>StarRatingList</name>
     <guid>feb6e918-2ef6-413f-985f-1fc7642d0cf7</guid>
-    <version>3.0.4</version>
-    <date>2021-04-06</date>
+    <version>3.1.0</version>
+    <date>2022-09-22</date>
     <description><![CDATA[v1.0.1 - Fixed error thrown in IE8 because of old & unused code
 		v1.0.2 - Fixed empty element in itteration loop when numeric question (see github change)
 		v1.0.3 - Fixed a wrong loop iteration count
@@ -25,7 +25,9 @@
 		v2.0.6 - JD - Fixed hover problem on touch device
 		v3.0.0 - JD - AvailableAnswers
 		v3.0.3 - JD - Changed GUID cause duplicate with StatementList
-    v3.0.4 - PG - Fixed animateResponses when set to no]]></description>
+    v3.0.4 - PG - Fixed animateResponses when set to no
+    v3.1.0 - Libraries updated,
+           - share folder removed]]></description>
     <company>Askia</company>
     <author><![CDATA[Paul Ferreira <paulf@askia.com>        Jerome Duparc <jeromed@askia.com>]]></author>
     <site>http://www.askia.com</site>
@@ -47,18 +49,18 @@
       <content fileName="standard.html" type="html" mode="dynamic" position="placeholder" />
       <content fileName="standard_single.html" type="html" mode="dynamic" position="none" />
       <content fileName="standard_numeric.html" type="html" mode="dynamic" position="none" />
-      <content fileName="es5-shim.min.js" type="javascript" mode="share" position="head">
+      <content fileName="es5-shim.min.js" type="javascript" mode="static" position="head">
         <yield><![CDATA[
 
           <!--[if lt IE 10]>
-            <script type="text/javascript" src="{%= CurrentADC.URLTo("share/es5-shim.min.js") %}"></script>
+            <script type="text/javascript" src="{%= CurrentADC.URLTo("static/es5-shim.min.js") %}"></script>
           <![endif]-->
 
         ]]></yield>
       </content>
-      <content fileName="domready.js" type="javascript" mode="share" position="head" />
-      <content fileName="tippy.css" type="css" mode="share" position="head" />
-      <content fileName="tippy.min.js" type="javascript" mode="share" position="head" />
+      <content fileName="domready.js" type="javascript" mode="static" position="head" />
+      <content fileName="tippy.css" type="css" mode="static" position="head" />
+      <content fileName="tippy.min.js" type="javascript" mode="static" position="head" />
       <content fileName="standard.css" type="css" mode="dynamic" position="head" />
       <content fileName="starratingList.js" type="javascript" mode="static" position="head" />
       <content fileName="standard.js" type="javascript" mode="dynamic" position="foot" />
